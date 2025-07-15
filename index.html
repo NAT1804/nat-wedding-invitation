@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Wedding Invitation - Join us for our special day"
+    />
+    <title>Nat & [Partner] - Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 min-h-screen overflow-x-hidden"
+  >
+    <!-- Scroll Progress Indicator -->
+    <div
+      class="scroll-progress fixed top-0 left-0 h-1 bg-gradient-to-r from-rose-500 to-pink-500 z-50 transform origin-left scale-x-0"
+    ></div>
+
+    <!-- Navigation Menu -->
+    <nav class="fixed top-4 right-4 z-40 opacity-0 nav-menu">
+      <div class="glass rounded-full p-2">
+        <div class="flex space-x-2">
+          <button
+            class="nav-btn w-3 h-3 rounded-full bg-rose-300 hover:bg-rose-500 transition-colors duration-300"
+            data-target="#hero"
+            title="Home"
+          ></button>
+          <button
+            class="nav-btn w-3 h-3 rounded-full bg-pink-300 hover:bg-pink-500 transition-colors duration-300"
+            data-target="#invitation"
+            title="Invitation"
+          ></button>
+          <button
+            class="nav-btn w-3 h-3 rounded-full bg-purple-300 hover:bg-purple-500 transition-colors duration-300"
+            data-target="#details"
+            title="Details"
+          ></button>
+          <button
+            class="nav-btn w-3 h-3 rounded-full bg-rose-400 hover:bg-rose-600 transition-colors duration-300"
+            data-target="#rsvp"
+            title="RSVP"
+          ></button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      id="hero"
+      class="min-h-screen flex items-center justify-center relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-rose-100/30 via-pink-100/20 to-purple-100/30"
+      ></div>
+
+      <!-- Floating decorative elements -->
+      <div
+        class="absolute top-20 left-10 w-4 h-4 bg-rose-300 rounded-full opacity-60 floating-element"
+      ></div>
+      <div
+        class="absolute top-40 right-20 w-6 h-6 bg-pink-300 rounded-full opacity-40 floating-element"
+      ></div>
+      <div
+        class="absolute bottom-40 left-20 w-3 h-3 bg-purple-300 rounded-full opacity-50 floating-element"
+      ></div>
+      <div
+        class="absolute bottom-60 right-10 w-5 h-5 bg-rose-400 rounded-full opacity-30 floating-element"
+      ></div>
+
+      <div class="text-center z-10 px-6 max-w-4xl mx-auto">
+        <div id="save-date" class="opacity-0 transform translate-y-8">
+          <p
+            class="font-inter text-rose-600 text-sm md:text-base tracking-widest uppercase mb-4"
+          >
+            Save the Date
+          </p>
+        </div>
+
+        <div id="couple-names" class="opacity-0 transform translate-y-8">
+          <h1
+            class="font-dancing text-5xl md:text-7xl lg:text-8xl text-gray-800 mb-6"
+          >
+            Nat <span class="text-rose-500">&</span> Alex
+          </h1>
+        </div>
+
+        <div id="wedding-date" class="opacity-0 transform translate-y-8">
+          <p class="font-playfair text-xl md:text-2xl text-gray-700 mb-8">
+            June 15th, 2024
+          </p>
+        </div>
+
+        <div id="hero-cta" class="opacity-0 transform translate-y-8">
+          <button
+            class="btn-wedding bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 rounded-full font-inter font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            View Invitation
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Invitation Section -->
+    <section id="invitation" class="py-20 px-6">
+      <div class="max-w-4xl mx-auto">
+        <div
+          class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-16 border border-white/20"
+        >
+          <div class="text-center">
+            <div class="invitation-content opacity-0 transform translate-y-8">
+              <p
+                class="font-inter text-gray-600 text-sm md:text-base tracking-wider uppercase mb-6"
+              >
+                Together with our families
+              </p>
+
+              <h2
+                class="font-dancing text-4xl md:text-6xl text-gray-800 mb-8 decorative-border"
+              >
+                Nat Thompson
+                <br />
+                <span class="text-rose-500 text-2xl md:text-3xl heart">&</span>
+                <br />
+                Alex Johnson
+              </h2>
+
+              <p class="font-playfair text-lg md:text-xl text-gray-700 mb-8">
+                Request the pleasure of your company<br />
+                at their wedding celebration
+              </p>
+
+              <div class="border-t border-b border-rose-200 py-8 my-8">
+                <p
+                  class="font-playfair text-2xl md:text-3xl text-gray-800 mb-2"
+                >
+                  Saturday, June 15th, 2024
+                </p>
+                <p class="font-inter text-gray-600">
+                  Four o'clock in the afternoon
+                </p>
+              </div>
+
+              <div class="mb-8">
+                <h3
+                  class="font-playfair text-xl md:text-2xl text-gray-800 mb-3"
+                >
+                  The Grand Ballroom
+                </h3>
+                <p class="font-inter text-gray-600 leading-relaxed">
+                  123 Wedding Lane<br />
+                  Beautiful City, BC 12345<br />
+                  Reception to follow
+                </p>
+              </div>
+
+              <p class="font-inter text-sm text-gray-500 italic">
+                Kindly respond by May 1st, 2024
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Details Section -->
+    <section id="details" class="py-20 px-6 bg-white/30 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2
+            class="font-dancing text-4xl md:text-5xl text-gray-800 mb-4 details-title opacity-0"
+          >
+            Wedding Details
+          </h2>
+          <p class="font-inter text-gray-600 details-subtitle opacity-0">
+            Everything you need to know about our special day
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="text-center detail-card opacity-0 transform translate-y-8"
+          >
+            <div
+              class="bg-rose-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <span class="text-2xl">⛪</span>
+            </div>
+            <h3 class="font-playfair text-xl text-gray-800 mb-3">Ceremony</h3>
+            <p class="font-inter text-gray-600 text-sm">
+              4:00 PM<br />
+              The Grand Ballroom<br />
+              123 Wedding Lane
+            </p>
+          </div>
+
+          <div
+            class="text-center detail-card opacity-0 transform translate-y-8"
+          >
+            <div
+              class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <span class="text-2xl">🍽️</span>
+            </div>
+            <h3 class="font-playfair text-xl text-gray-800 mb-3">Reception</h3>
+            <p class="font-inter text-gray-600 text-sm">
+              6:00 PM<br />
+              Same Venue<br />
+              Dinner & Dancing
+            </p>
+          </div>
+
+          <div
+            class="text-center detail-card opacity-0 transform translate-y-8"
+          >
+            <div
+              class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <span class="text-2xl">👗</span>
+            </div>
+            <h3 class="font-playfair text-xl text-gray-800 mb-3">Dress Code</h3>
+            <p class="font-inter text-gray-600 text-sm">
+              Cocktail Attire<br />
+              Garden Party Chic<br />
+              Pastels Encouraged
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-20 px-6">
+      <div class="max-w-2xl mx-auto">
+        <div
+          class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-3xl p-8 md:p-12 shadow-xl"
+        >
+          <div class="text-center mb-8">
+            <h2
+              class="font-dancing text-4xl md:text-5xl text-gray-800 mb-4 rsvp-title opacity-0"
+            >
+              RSVP
+            </h2>
+            <p class="font-inter text-gray-600 rsvp-subtitle opacity-0">
+              Please let us know if you can join us by May 1st, 2024
+            </p>
+          </div>
+
+          <form id="rsvp-form" class="space-y-6 rsvp-form opacity-0">
+            <div class="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="First Name"
+                class="form-input w-full px-4 py-3 rounded-lg border border-rose-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all duration-300"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                class="form-input w-full px-4 py-3 rounded-lg border border-rose-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all duration-300"
+                required
+              />
+            </div>
+
+            <input
+              type="email"
+              placeholder="Email Address"
+              class="form-input w-full px-4 py-3 rounded-lg border border-rose-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all duration-300"
+              required
+            />
+
+            <div class="flex items-center space-x-6">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="attendance"
+                  value="yes"
+                  class="sr-only peer"
+                  required
+                />
+                <div
+                  class="w-5 h-5 border-2 border-rose-300 rounded-full peer-checked:bg-rose-500 peer-checked:border-rose-500 transition-all duration-300 flex items-center justify-center"
+                >
+                  <div
+                    class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-300"
+                  ></div>
+                </div>
+                <span class="ml-3 font-inter text-gray-700"
+                  >Joyfully Accept</span
+                >
+              </label>
+
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="attendance"
+                  value="no"
+                  class="sr-only peer"
+                  required
+                />
+                <div
+                  class="w-5 h-5 border-2 border-rose-300 rounded-full peer-checked:bg-rose-500 peer-checked:border-rose-500 transition-all duration-300 flex items-center justify-center"
+                >
+                  <div
+                    class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-300"
+                  ></div>
+                </div>
+                <span class="ml-3 font-inter text-gray-700"
+                  >Regretfully Decline</span
+                >
+              </label>
+            </div>
+
+            <textarea
+              placeholder="Any dietary restrictions or special requests?"
+              rows="3"
+              class="form-input w-full px-4 py-3 rounded-lg border border-rose-200 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200 transition-all duration-300 resize-none"
+            ></textarea>
+
+            <button
+              type="submit"
+              class="btn-wedding w-full bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-lg font-inter font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Send RSVP
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 text-center bg-white/20 backdrop-blur-sm">
+      <div class="max-w-2xl mx-auto">
+        <p
+          class="font-dancing text-2xl md:text-3xl text-gray-800 mb-4 footer-content opacity-0"
+        >
+          We can't wait to celebrate with you!
+        </p>
+        <p class="font-inter text-gray-600 text-sm footer-content opacity-0">
+          For questions, contact us at hello@natalexwedding.com
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/scripts/main.ts"></script>
+  </body>
+</html>
