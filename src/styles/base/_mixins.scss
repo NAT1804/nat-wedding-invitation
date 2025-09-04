@@ -1,0 +1,138 @@
+// Import variables
+@use "variables" as *;
+
+// Layout Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Effect Mixins
+@mixin glass-effect {
+  background: rgba($white, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba($white, 0.2);
+}
+
+@mixin gradient-bg($color1, $color2, $color3) {
+  background: linear-gradient(135deg, $color1 0%, $color2 50%, $color3 100%);
+}
+
+@mixin button-hover {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba($primary-color, 0.3);
+  }
+}
+
+// Animation Mixins
+@mixin floating-animation($delay: 0s) {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: $delay;
+}
+
+@mixin fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@mixin heart-beat {
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@mixin glow-effect {
+  animation: glow 2s ease-in-out infinite;
+}
+
+// Responsive Mixins
+@mixin responsive($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: $mobile) {
+      @content;
+    }
+  } @else if $breakpoint == tablet {
+    @media (min-width: #{$mobile + 1}) and (max-width: $tablet) {
+      @content;
+    }
+  } @else if $breakpoint == desktop {
+    @media (min-width: #{$tablet + 1}) {
+      @content;
+    }
+  }
+}
+
+@mixin mobile-only {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{$mobile + 1}) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: #{$tablet + 1}) {
+    @content;
+  }
+}
+
+// Typography Mixins
+@mixin font-dancing {
+  font-family: $font-dancing;
+}
+
+@mixin font-playfair {
+  font-family: $font-playfair;
+}
+
+@mixin font-inter {
+  font-family: $font-inter;
+}
+
+// Form Mixins
+@mixin form-input {
+  transition: all 0.3s ease;
+  background: rgba($white, 0.8);
+
+  &:focus {
+    background: $white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-color, 0.15);
+    outline: none;
+  }
+}
+
+// Shadow Mixins
+@mixin shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+@mixin shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}

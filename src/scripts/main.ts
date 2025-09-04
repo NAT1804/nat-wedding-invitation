@@ -1,362 +1,281 @@
 import "@/styles/main.scss";
-import { gsap } from "gsap";
+
+import SplitType from "split-type";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-gsap.registerPlugin(ScrollTrigger);
+const $ = document.querySelector.bind(document);
+const $$ = document.querySelectorAll.bind(document);
 
-// Initialize animations
-function initAnimations() {
-  // Hero section animations with enhanced effects
-  const heroTimeline = gsap.timeline();
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-  heroTimeline
-    .to("#save-date", {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power2.out",
-      onComplete: () => {
-        gsap.to("#save-date", {
-          scale: 1.05,
-          duration: 0.3,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-        });
-      },
-    })
-    .to(
-      "#couple-names",
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "back.out(1.7)",
-        onComplete: () => {
-          // Heart pulse animation
-          gsap.to(".heart", {
-            scale: 1.3,
-            duration: 0.6,
-            yoyo: true,
-            repeat: -1,
-            ease: "power2.inOut",
-          });
-        },
-      },
-      "-=0.3"
-    )
-    .to(
-      "#wedding-date",
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-      "-=0.5"
-    )
-    .to(
-      "#hero-cta",
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        onComplete: () => {
-          // Subtle button glow effect
-          gsap.to("#hero-cta button", {
-            boxShadow: "0 0 20px rgba(244, 63, 94, 0.3)",
-            duration: 2,
-            yoyo: true,
-            repeat: -1,
-            ease: "power2.inOut",
-          });
-        },
-      },
-      "-=0.3"
-    );
+// Music Player
+function initMusicPlayer() {
+  const musicToggle = $("#musicToggle") as HTMLElement;
+  const bgMusic = $("#bgMusic") as HTMLAudioElement;
+  let isPlaying = false;
 
-  // Enhanced floating elements animation
-  gsap.to(".floating-element", {
-    y: -20,
-    x: 10,
-    rotation: 360,
-    duration: 4,
-    ease: "power1.inOut",
-    repeat: -1,
-    yoyo: true,
-    stagger: 0.7,
-  });
-
-  // Additional sparkle effect for floating elements
-  gsap.to(".floating-element", {
-    opacity: 0.8,
-    scale: 1.2,
-    duration: 2,
-    ease: "power2.inOut",
-    repeat: -1,
-    yoyo: true,
-    stagger: 1,
-  });
-
-  // Scroll-triggered animations
-  gsap.to(".invitation-content", {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#invitation",
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play none none reverse",
-    },
-  });
-
-  // Details section
-  gsap.to(".details-title", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#details",
-      start: "top 80%",
-    },
-  });
-
-  gsap.to(".details-subtitle", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    delay: 0.2,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#details",
-      start: "top 80%",
-    },
-  });
-
-  gsap.to(".detail-card", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: "power2.out",
-    stagger: 0.2,
-    scrollTrigger: {
-      trigger: ".detail-card",
-      start: "top 85%",
-    },
-  });
-
-  // RSVP section
-  gsap.to(".rsvp-title", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#rsvp",
-      start: "top 80%",
-    },
-  });
-
-  gsap.to(".rsvp-subtitle", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    delay: 0.2,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#rsvp",
-      start: "top 80%",
-    },
-  });
-
-  gsap.to(".rsvp-form", {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    delay: 0.4,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: "#rsvp",
-      start: "top 80%",
-    },
-  });
-
-  // Footer
-  gsap.to(".footer-content", {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: "power2.out",
-    stagger: 0.2,
-    scrollTrigger: {
-      trigger: "footer",
-      start: "top 90%",
-    },
+  musicToggle?.addEventListener("click", () => {
+    if (isPlaying) {
+      bgMusic?.pause();
+      musicToggle.classList.remove("playing");
+    } else {
+      bgMusic?.play();
+      musicToggle.classList.add("playing");
+    }
+    isPlaying = !isPlaying;
   });
 }
 
-// Navigation functionality
-function setupNavigation() {
-  const navButtons = document.querySelectorAll(".nav-btn");
-  const navMenu = document.querySelector(".nav-menu");
+// Particle Effects for Hero Section
+function initParticles() {
+  const particlesContainer = $("#particles") as HTMLElement;
+  if (!particlesContainer) return;
 
-  // Show navigation after scroll
-  gsap.to(navMenu, {
-    opacity: 1,
-    duration: 0.5,
-    delay: 2,
-    ease: "power2.out",
-  });
+  const particleCount = 50;
 
-  navButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.getAttribute("data-target");
-      if (target) {
-        gsap.to(window, {
-          duration: 1.5,
-          scrollTo: target,
-          ease: "power2.inOut",
-        });
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.animationDelay = Math.random() * 20 + "s";
+    particle.style.animationDuration = 20 + Math.random() * 20 + "s";
+    particlesContainer.appendChild(particle);
+  }
+}
 
-        // Button click animation
-        gsap.to(btn, {
-          scale: 1.3,
-          duration: 0.1,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-        });
+// Gallery Lightbox
+function initGallery() {
+  const galleryItems = $$(".gallery__item");
+  const lightbox = $("#lightbox") as HTMLElement;
+  const lightboxImage = $("#lightboxImage") as HTMLImageElement;
+  const lightboxClose = $("#lightboxClose") as HTMLElement;
+
+  // Lightbox functionality
+  galleryItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const img = item.querySelector("img") as HTMLImageElement;
+      if (img && lightboxImage) {
+        lightboxImage.src = img.src;
+        lightbox?.classList.add("active");
       }
     });
   });
-}
 
-// Additional interactive features
-function addInteractiveFeatures() {
-  // Add hover animations to detail cards
-  const detailCards = document.querySelectorAll(".detail-card");
-  detailCards.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      gsap.to(card, {
-        scale: 1.05,
-        y: -10,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-      gsap.to(
-        card.querySelector(".bg-rose-100, .bg-pink-100, .bg-purple-100"),
-        {
-          rotation: 360,
-          duration: 0.6,
-          ease: "power2.inOut",
-        }
-      );
-    });
-
-    card.addEventListener("mouseleave", () => {
-      gsap.to(card, {
-        scale: 1,
-        y: 0,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    });
+  lightboxClose?.addEventListener("click", () => {
+    lightbox?.classList.remove("active");
   });
 
-  // Add parallax effect to sections
-  gsap.to("#hero", {
-    yPercent: -50,
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove("active");
+    }
+  });
+}
+
+// Initialize all animations
+function initAnimations() {
+  // Initialize ScrollSmoother
+  ScrollSmoother.create({
+    wrapper: "#smooth-wrapper",
+    content: "#smooth-content",
+    smooth: 2,
+    normalizeScroll: true,
+    ignoreMobileResize: true,
+    effects: true,
+  });
+
+  // Hero animations
+  gsap
+    .timeline()
+    .from(".hero__subtitle", { opacity: 0, y: 30, duration: 1 })
+    .from(
+      ".hero__name",
+      { opacity: 0, y: 50, duration: 1, stagger: 0.2 },
+      "-=0.5"
+    )
+    .from(".hero__amp", { opacity: 0, scale: 0, duration: 0.5 }, "-=0.5")
+    .from(".hero__date", { opacity: 0, y: 30, duration: 1 }, "-=0.5")
+    .from(".hero__quote", { opacity: 0, duration: 1 }, "-=0.5")
+    .from(".hero__cta", { opacity: 0, y: 30, duration: 1 }, "-=0.5");
+
+  // Parallax effects
+  gsap.to(".hero__bg", {
+    yPercent: 50,
     ease: "none",
     scrollTrigger: {
-      trigger: "#hero",
-      start: "top bottom",
+      trigger: ".hero",
+      start: "top top",
       end: "bottom top",
       scrub: true,
     },
   });
 
-  // Add text reveal animation for invitation content
-  const textElements = document.querySelectorAll(
-    "#invitation h2, #invitation p"
-  );
-  textElements.forEach((element, index) => {
-    gsap.to(element, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
+  // Gallery items animation
+  const galleryItems = $$(".gallery__item");
+  galleryItems.forEach((item, index) => {
+    gsap.from(item, {
+      opacity: 0,
+      y: 50,
+      duration: 1,
       delay: index * 0.1,
-      ease: "power2.out",
       scrollTrigger: {
-        trigger: element,
-        start: "top 85%",
-        toggleActions: "play none none reverse",
+        trigger: item,
+        start: "top 80%",
+      },
+    });
+  });
+
+  // Title animations
+  const titles = $$(".hero__name");
+  titles.forEach((title) => {
+    const splitText = new SplitType(title as HTMLElement, { types: "chars" });
+
+    gsap.from(splitText.chars, {
+      opacity: 0,
+      y: 50,
+      rotateX: -90,
+      stagger: 0.02,
+      duration: 1,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: title,
+        start: "top 80%",
       },
     });
   });
 }
 
-// Smooth scroll for CTA button
-document.addEventListener("DOMContentLoaded", () => {
-  const ctaButton = document.querySelector("#hero-cta button");
-  ctaButton?.addEventListener("click", () => {
-    gsap.to(window, {
-      duration: 1.5,
-      scrollTo: "#invitation",
-      ease: "power2.inOut",
-    });
+function loadIntroPanel() {
+  // Panel animation
+  gsap.to(".panel", {
+    scaleY: 0,
+    duration: 1.65,
+    ease: "power4.inOut",
+  });
+}
+
+function loadTitle() {
+  const splitName = new SplitType(".hero__title", {
+    types: "chars",
   });
 
-  // RSVP form submission
-  const rsvpForm = document.querySelector("#rsvp-form") as HTMLFormElement;
-  rsvpForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
+  gsap
+    .timeline()
+    .set(".hero__title", { scale: 1.4 })
+    .from(splitName.chars, {
+      yPercent: gsap.utils.wrap([200, -80]),
+      opacity: 0,
+      stagger: 0.018,
+      duration: 1.6,
+      ease: "power4.inOut",
+    })
+    .to(
+      ".hero__title",
+      { scale: 1, duration: 0.95, ease: "power3.out" },
+      "-=0.75"
+    );
+}
 
-    // Simple form validation and submission feedback
-    const button = rsvpForm.querySelector(
-      "button[type='submit']"
-    ) as HTMLButtonElement;
-    const originalText = button.textContent;
-
-    button.textContent = "Sending...";
-    button.disabled = true;
-
-    // Simulate form submission
-    setTimeout(() => {
-      button.textContent = "Thank You! ✨";
-      button.classList.remove("bg-rose-500", "hover:bg-rose-600");
-      button.classList.add("bg-green-500");
-
-      // Reset form after a delay
-      setTimeout(() => {
-        rsvpForm.reset();
-        button.textContent = originalText;
-        button.disabled = false;
-        button.classList.remove("bg-green-500");
-        button.classList.add("bg-rose-500", "hover:bg-rose-600");
-      }, 3000);
-    }, 2000);
+function loadSecImg() {
+  const splitJL = new SplitType(".JL", {
+    types: "chars",
   });
 
-  // Initialize all animations and features
-  initAnimations();
-  addInteractiveFeatures();
-  setupNavigation();
-
-  // Add loading animation
-  gsap.from("body", {
-    opacity: 0,
-    duration: 1,
-    ease: "power2.out",
-  });
-
-  // Add scroll progress indicator
-  gsap.to(".scroll-progress", {
-    scaleX: 1,
-    ease: "none",
+  const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: "body",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
+      trigger: ".sec-img",
+      // markers: true,
+      scrub: 0.4,
+      scroller: "#smooth-wrapper",
+      pin: true,
+      start: "center center",
+      end: "+=100%",
     },
   });
+
+  tl.to(".mask", {
+    scaleY: 0,
+  })
+    .from(
+      splitJL.chars,
+      {
+        opacity: 0,
+        x: -100,
+        stagger: 0.015,
+      },
+      0
+    )
+    .from(
+      ".img",
+      {
+        opacity: 0,
+        scale: 1.7,
+      },
+      0
+    );
+}
+
+function loadSpinImg() {
+  gsap
+    .timeline({
+      scrollTrigger: {
+        trigger: ".spin-img",
+        scrub: 1,
+        scroller: "#smooth-wrapper",
+      },
+    })
+    .from(".spin-img__list", {
+      scale: 0.8,
+    })
+    .to(".spin-img__list", {
+      scale: 1,
+      rotate: 270,
+      duration: 2,
+      ease: "power1.inOut",
+    })
+    .to(
+      ".spin-img__img",
+      {
+        rotate: -270,
+        duration: 2,
+        ease: "power1.inOut",
+      },
+      0
+    );
+}
+
+function loadGallery() {
+  gsap.utils.toArray("section.demo-gallery").forEach((section: any, index) => {
+    const w = section.querySelector(".wrapper");
+    const [x, xEnd] =
+      index % 2
+        ? ["100%", (w.scrollWidth - section.offsetWidth) * -1]
+        : [w.scrollWidth * -1, 0];
+    gsap.fromTo(
+      w,
+      { x },
+      {
+        x: xEnd,
+        scrollTrigger: {
+          trigger: section,
+          scrub: 0.5,
+        },
+      }
+    );
+  });
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  initAnimations();
+  loadIntroPanel();
+  loadTitle();
+  loadSecImg();
+  loadSpinImg();
+  loadGallery();
+  initMusicPlayer();
+  initParticles();
+  initGallery();
 });

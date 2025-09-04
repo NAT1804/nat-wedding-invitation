@@ -5,6 +5,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),
+      "@styles": resolve(import.meta.dirname, "./src/styles"),
     },
   },
   css: {
@@ -13,12 +14,14 @@ export default defineConfig({
         additionalData: `
           @use "sass:math";
           @use "sass:color";
+          @use "@styles/base/variables" as *;
+          @use "@styles/base/mixins" as *;
+          @use "@styles/utils/animations" as *;
         `,
       },
     },
   },
   server: {
-    port: 3000,
-    open: true,
+    port: 3001,
   },
 });
