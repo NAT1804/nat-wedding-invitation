@@ -10,6 +10,8 @@ const $$ = document.querySelectorAll.bind(document);
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
+// let smoother: ScrollSmoother | null = null;
+
 // Music Player
 function initMusicPlayer() {
   const musicToggle = $("#musicToggle") as HTMLElement;
@@ -247,7 +249,7 @@ function loadSpinImg() {
 }
 
 function loadGallery() {
-  gsap.utils.toArray("section.demo-gallery").forEach((section: any, index) => {
+  gsap.utils.toArray("section.my-gallery").forEach((section: any, index) => {
     const w = section.querySelector(".wrapper");
     const [x, xEnd] =
       index % 2
@@ -267,11 +269,24 @@ function loadGallery() {
   });
 }
 
+function smoothTitle() {
+  // let headings = gsap.utils.toArray(".JL").reverse();
+  // headings.forEach((heading: any, i) => {
+  //   let headingIndex = i + 1;
+  //   let mySplitText = new SplitType(heading, { types: "chars" });
+  //   let chars = mySplitText.chars ?? [];
+  //   chars.forEach((char, i) => {
+  //     smoother?.effects(char, { lag: (i + headingIndex) * 0.1, speed: 1 });
+  //   });
+  // });
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   initAnimations();
   loadIntroPanel();
   loadTitle();
+  smoothTitle();
   loadSecImg();
   loadSpinImg();
   loadGallery();
