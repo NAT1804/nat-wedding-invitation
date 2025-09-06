@@ -47,31 +47,217 @@ function initParticles() {
   }
 }
 
-// Gallery Lightbox
-function initGallery() {
-  const galleryItems = $$(".gallery__item");
+// Enhanced Gallery and Zoom Lightbox
+function initZoomableImages() {
+  const zoomableItems = $$(".zoomable") as NodeListOf<HTMLElement>;
   const lightbox = $("#lightbox") as HTMLElement;
   const lightboxImage = $("#lightboxImage") as HTMLImageElement;
   const lightboxClose = $("#lightboxClose") as HTMLElement;
+  const zoomInBtn = $("#zoomIn") as HTMLElement;
+  const zoomOutBtn = $("#zoomOut") as HTMLElement;
+  const zoomResetBtn = $("#zoomReset") as HTMLElement;
+  const rotateLeftBtn = $("#rotateLeft") as HTMLElement;
+  const rotateRightBtn = $("#rotateRight") as HTMLElement;
+  const rotateResetBtn = $("#rotateReset") as HTMLElement;
+  
+  let currentScale = 1;
+  let currentRotation = 0;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let translateX = 0;
+  let translateY = 0;
 
-  // Lightbox functionality
-  galleryItems.forEach((item) => {
+  // Function to update image transform
+  const updateImageTransform = () => {
+    if (lightboxImage) {
+      lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
+    }
+  };
+
+  // Reset zoom, position, and rotation
+  const resetAll = () => {
+    currentScale = 1;
+    currentRotation = 0;
+    translateX = 0;
+    translateY = 0;
+    updateImageTransform();
+  };
+  
+  // Reset only zoom and position (keep rotation)
+  const resetZoom = () => {
+    currentScale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateImageTransform();
+  };
+  
+  // Reset only rotation (keep zoom and position)
+  const resetRotation = () => {
+    currentRotation = 0;
+    updateImageTransform();
+  };
+
+  // Open lightbox with background image
+  zoomableItems.forEach((item) => {
     item.addEventListener("click", () => {
-      const img = item.querySelector("img") as HTMLImageElement;
-      if (img && lightboxImage) {
-        lightboxImage.src = img.src;
+      const bgUrl = item.getAttribute('data-bg');
+      if (bgUrl && lightboxImage) {
+        lightboxImage.src = bgUrl;
         lightbox?.classList.add("active");
+        resetAll();
       }
     });
   });
 
+  // Close lightbox
   lightboxClose?.addEventListener("click", () => {
     lightbox?.classList.remove("active");
+    resetAll();
   });
 
+  // Close on background click
   lightbox?.addEventListener("click", (e) => {
     if (e.target === lightbox) {
       lightbox.classList.remove("active");
+      resetAll();
+    }
+  });
+
+  // Zoom controls
+  zoomInBtn?.addEventListener("click", () => {
+    currentScale = Math.min(currentScale * 1.3, 5);
+    updateImageTransform();
+  });
+
+  zoomOutBtn?.addEventListener("click", () => {
+    currentScale = Math.max(currentScale / 1.3, 0.5);
+    updateImageTransform();
+  });
+
+  zoomResetBtn?.addEventListener("click", () => {
+    resetZoom();
+  });
+
+  // Rotation controls
+  rotateLeftBtn?.addEventListener("click", () => {
+    currentRotation -= 90;
+    updateImageTransform();
+  });
+
+  rotateRightBtn?.addEventListener("click", () => {
+    currentRotation += 90;
+    updateImageTransform();
+  });
+
+  rotateResetBtn?.addEventListener("click", () => {
+    resetRotation();
+  });
+
+  // Mouse wheel zoom
+  lightboxImage?.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    currentScale = Math.min(Math.max(currentScale * delta, 0.5), 5);
+    updateImageTransform();
+  });
+
+  // Drag functionality for zoomed images
+  lightboxImage?.addEventListener("mousedown", (e) => {
+    if (currentScale > 1) {
+      isDragging = true;
+      startX = e.clientX - translateX;
+      startY = e.clientY - translateY;
+      lightboxImage.style.cursor = "grabbing";
+    }
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (isDragging && currentScale > 1) {
+      translateX = e.clientX - startX;
+      translateY = e.clientY - startY;
+      updateImageTransform();
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      isDragging = false;
+      if (lightboxImage) {
+        lightboxImage.style.cursor = currentScale > 1 ? "grab" : "default";
+      }
+    }
+  });
+
+  // Keyboard controls
+  document.addEventListener("keydown", (e) => {
+    if (lightbox?.classList.contains("active")) {
+      switch (e.key) {
+        case "Escape":
+          lightbox.classList.remove("active");
+          resetAll();
+          break;
+        case "+":
+        case "=":
+          currentScale = Math.min(currentScale * 1.3, 5);
+          updateImageTransform();
+          break;
+        case "-":
+          currentScale = Math.max(currentScale / 1.3, 0.5);
+          updateImageTransform();
+          break;
+        case "0":
+          resetZoom();
+          break;
+        case "r":
+        case "R":
+          currentRotation += 90;
+          updateImageTransform();
+          break;
+        case "l":
+        case "L":
+          currentRotation -= 90;
+          updateImageTransform();
+          break;
+        case "ArrowLeft":
+          currentRotation -= 90;
+          updateImageTransform();
+          break;
+        case "ArrowRight":
+          currentRotation += 90;
+          updateImageTransform();
+          break;
+        case "ArrowUp":
+          resetRotation();
+          break;
+      }
+    }
+  });
+
+  // Touch support for mobile
+  let initialDistance = 0;
+  let initialScale = 1;
+
+  lightboxImage?.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 2) {
+      initialDistance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      initialScale = currentScale;
+    }
+  });
+
+  lightboxImage?.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      const distance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scale = (distance / initialDistance) * initialScale;
+      currentScale = Math.min(Math.max(scale, 0.5), 5);
+      updateImageTransform();
     }
   });
 }
@@ -249,12 +435,12 @@ function loadSpinImg() {
 }
 
 function loadGallery() {
-  gsap.utils.toArray("section.my-gallery").forEach((section: any, index) => {
+  gsap.utils.toArray(".my-gallery").forEach((section: any, index) => {
     const w = section.querySelector(".wrapper");
     const [x, xEnd] =
       index % 2
         ? ["100%", (w.scrollWidth - section.offsetWidth) * -1]
-        : [w.scrollWidth * -1, 0];
+        : [w.scrollWidth * -0.5, 0];
     gsap.fromTo(
       w,
       { x },
@@ -262,7 +448,7 @@ function loadGallery() {
         x: xEnd,
         scrollTrigger: {
           trigger: section,
-          scrub: 0.5,
+          scrub: 1,
         },
       }
     );
@@ -281,6 +467,16 @@ function smoothTitle() {
   // });
 }
 
+function initBackgroundImagesInvitation() {
+  const bgElements = $$('[data-bg]') as NodeListOf<HTMLElement>;
+  bgElements.forEach((element) => {
+    const bgUrl = element.getAttribute('data-bg');
+    if (bgUrl) {
+      element.style.backgroundImage = `url(${bgUrl})`;
+    }
+  });
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   initAnimations();
@@ -290,7 +486,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSecImg();
   loadSpinImg();
   loadGallery();
+  initBackgroundImagesInvitation();
   initMusicPlayer();
   initParticles();
-  initGallery();
+  initZoomableImages();
 });
