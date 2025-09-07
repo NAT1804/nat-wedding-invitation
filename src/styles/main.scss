@@ -67,6 +67,8 @@ section {
 
 // Hero Section
 .hero {
+  min-height: 100vh;
+  height: auto;
   position: relative;
   overflow: hidden;
   @include flex-center;
@@ -887,7 +889,7 @@ section {
     font-weight: 800;
     
     @include mobile-only {
-      font-size: 42px;
+      font-size: 40px;
     }
   }
   

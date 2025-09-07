@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+# Sitemap: https://nat-wedding-invitation.vercel.app/sitemap.xml
+
+# Block unnecessary pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.scss
+Disallow: /*.ts
+Disallow: /src/
+
+# Allow images and assets
+Allow: /images/
+Allow: /favicon/
+Allow: /sounds/
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
