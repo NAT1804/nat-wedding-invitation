@@ -8,15 +8,134 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+// Image loading tracker
+class ImageLoadingTracker {
+  private totalImages = 0;
+  private loadedImages = 0;
+  private loader: HTMLElement | null = null;
+  private resolvePromise: (() => void) | null = null;
+  private isLoaderHidden = false;
 
-// let smoother: ScrollSmoother | null = null;
+  constructor() {
+    this.loader = $("#loader");
+  }
+
+  init(): Promise<void> {
+    return new Promise((resolve) => {
+      this.resolvePromise = resolve;
+      
+      // Get all images that need to be tracked
+      const images = $$('img') as NodeListOf<HTMLImageElement>;
+      const bgImages = $$('[data-bg]') as NodeListOf<HTMLElement>;
+      
+      this.totalImages = images.length + bgImages.length;
+      
+      if (this.totalImages === 0) {
+        this.allImagesLoaded();
+        return;
+      }
+
+      console.log(`Starting to load ${this.totalImages} images...`);
+
+      // Track regular img elements
+      images.forEach(img => {
+        if (img.complete && img.naturalHeight !== 0) {
+          this.imageLoaded();
+        } else {
+          img.addEventListener('load', () => this.imageLoaded());
+          img.addEventListener('error', () => this.imageLoaded());
+        }
+      });
+
+      // Track background images
+      bgImages.forEach(element => {
+        const bgUrl = element.getAttribute('data-bg');
+        if (bgUrl) {
+          const img = new Image();
+          img.onload = () => {
+            element.style.backgroundImage = `url(${bgUrl})`;
+            this.imageLoaded();
+          };
+          img.onerror = () => this.imageLoaded();
+          img.src = bgUrl;
+        } else {
+          this.imageLoaded();
+        }
+      });
+    });
+  }
+
+  private imageLoaded() {
+    this.loadedImages++;
+    console.log(`Images loaded: ${this.loadedImages}/${this.totalImages}`);
+    
+    if (this.loadedImages >= this.totalImages) {
+      this.allImagesLoaded();
+    }
+  }
+
+  private allImagesLoaded() {
+    console.log('All images loaded! Hiding loader and resolving promise...');
+    
+    // Add a small delay to ensure smooth transition
+    setTimeout(() => {
+      this.hideLoader();
+      
+      setTimeout(() => {
+        if (this.resolvePromise) {
+          this.resolvePromise();
+        }
+      }, 600); 
+    }, 500);
+  }
+
+  private hideLoader() {
+    if (this.isLoaderHidden) {
+      console.log('Loader already hidden, skipping...');
+      return;
+    }
+    
+    this.isLoaderHidden = true;
+    
+    if (this.loader && this.loader.parentNode) {
+      this.loader.classList.add('hidden');
+      console.log('Loader hidden class added');
+      
+      // Remove from DOM after transition, but only if it's still in the DOM
+      setTimeout(() => {
+        if (this.loader && document.body.contains(this.loader)) {
+          try {
+            // Use remove() method which is safer than removeChild()
+            this.loader.remove();
+            console.log('Loader removed from DOM successfully');
+            this.loader = null; // Clear reference
+          } catch (error) {
+            console.warn('Error removing loader from DOM:', error);
+            // Fallback: try removeChild if remove() fails
+            try {
+              if (this.loader && this.loader.parentNode) {
+                this.loader.parentNode.removeChild(this.loader);
+                console.log('Loader removed using removeChild fallback');
+                this.loader = null;
+              }
+            } catch (fallbackError) {
+              console.error('Failed to remove loader with both methods:', fallbackError);
+            }
+          }
+        }
+      }, 500);
+    }
+  }
+}
 
 // Music Player
 function initMusicPlayer() {
   const musicToggle = $("#musicToggle") as HTMLElement;
   const bgMusic = $("#bgMusic") as HTMLAudioElement;
-  let isPlaying = false;
+  let isPlaying = musicToggle.classList.contains("playing");
+  if (isPlaying) {
+    bgMusic?.play();
+  }
 
   musicToggle?.addEventListener("click", () => {
     if (isPlaying) {
@@ -47,221 +166,6 @@ function initParticles() {
   }
 }
 
-// Enhanced Gallery and Zoom Lightbox
-function initZoomableImages() {
-  const zoomableItems = $$(".zoomable") as NodeListOf<HTMLElement>;
-  const lightbox = $("#lightbox") as HTMLElement;
-  const lightboxImage = $("#lightboxImage") as HTMLImageElement;
-  const lightboxClose = $("#lightboxClose") as HTMLElement;
-  const zoomInBtn = $("#zoomIn") as HTMLElement;
-  const zoomOutBtn = $("#zoomOut") as HTMLElement;
-  const zoomResetBtn = $("#zoomReset") as HTMLElement;
-  const rotateLeftBtn = $("#rotateLeft") as HTMLElement;
-  const rotateRightBtn = $("#rotateRight") as HTMLElement;
-  const rotateResetBtn = $("#rotateReset") as HTMLElement;
-  
-  let currentScale = 1;
-  let currentRotation = 0;
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let translateX = 0;
-  let translateY = 0;
-
-  // Function to update image transform
-  const updateImageTransform = () => {
-    if (lightboxImage) {
-      lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
-    }
-  };
-
-  // Reset zoom, position, and rotation
-  const resetAll = () => {
-    currentScale = 1;
-    currentRotation = 0;
-    translateX = 0;
-    translateY = 0;
-    updateImageTransform();
-  };
-  
-  // Reset only zoom and position (keep rotation)
-  const resetZoom = () => {
-    currentScale = 1;
-    translateX = 0;
-    translateY = 0;
-    updateImageTransform();
-  };
-  
-  // Reset only rotation (keep zoom and position)
-  const resetRotation = () => {
-    currentRotation = 0;
-    updateImageTransform();
-  };
-
-  // Open lightbox with background image
-  zoomableItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      const bgUrl = item.getAttribute('data-bg');
-      if (bgUrl && lightboxImage) {
-        lightboxImage.src = bgUrl;
-        lightbox?.classList.add("active");
-        resetAll();
-      }
-    });
-  });
-
-  // Close lightbox
-  lightboxClose?.addEventListener("click", () => {
-    lightbox?.classList.remove("active");
-    resetAll();
-  });
-
-  // Close on background click
-  lightbox?.addEventListener("click", (e) => {
-    if (e.target === lightbox) {
-      lightbox.classList.remove("active");
-      resetAll();
-    }
-  });
-
-  // Zoom controls
-  zoomInBtn?.addEventListener("click", () => {
-    currentScale = Math.min(currentScale * 1.3, 5);
-    updateImageTransform();
-  });
-
-  zoomOutBtn?.addEventListener("click", () => {
-    currentScale = Math.max(currentScale / 1.3, 0.5);
-    updateImageTransform();
-  });
-
-  zoomResetBtn?.addEventListener("click", () => {
-    resetZoom();
-  });
-
-  // Rotation controls
-  rotateLeftBtn?.addEventListener("click", () => {
-    currentRotation -= 90;
-    updateImageTransform();
-  });
-
-  rotateRightBtn?.addEventListener("click", () => {
-    currentRotation += 90;
-    updateImageTransform();
-  });
-
-  rotateResetBtn?.addEventListener("click", () => {
-    resetRotation();
-  });
-
-  // Mouse wheel zoom
-  lightboxImage?.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    currentScale = Math.min(Math.max(currentScale * delta, 0.5), 5);
-    updateImageTransform();
-  });
-
-  // Drag functionality for zoomed images
-  lightboxImage?.addEventListener("mousedown", (e) => {
-    if (currentScale > 1) {
-      isDragging = true;
-      startX = e.clientX - translateX;
-      startY = e.clientY - translateY;
-      lightboxImage.style.cursor = "grabbing";
-    }
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (isDragging && currentScale > 1) {
-      translateX = e.clientX - startX;
-      translateY = e.clientY - startY;
-      updateImageTransform();
-    }
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (isDragging) {
-      isDragging = false;
-      if (lightboxImage) {
-        lightboxImage.style.cursor = currentScale > 1 ? "grab" : "default";
-      }
-    }
-  });
-
-  // Keyboard controls
-  document.addEventListener("keydown", (e) => {
-    if (lightbox?.classList.contains("active")) {
-      switch (e.key) {
-        case "Escape":
-          lightbox.classList.remove("active");
-          resetAll();
-          break;
-        case "+":
-        case "=":
-          currentScale = Math.min(currentScale * 1.3, 5);
-          updateImageTransform();
-          break;
-        case "-":
-          currentScale = Math.max(currentScale / 1.3, 0.5);
-          updateImageTransform();
-          break;
-        case "0":
-          resetZoom();
-          break;
-        case "r":
-        case "R":
-          currentRotation += 90;
-          updateImageTransform();
-          break;
-        case "l":
-        case "L":
-          currentRotation -= 90;
-          updateImageTransform();
-          break;
-        case "ArrowLeft":
-          currentRotation -= 90;
-          updateImageTransform();
-          break;
-        case "ArrowRight":
-          currentRotation += 90;
-          updateImageTransform();
-          break;
-        case "ArrowUp":
-          resetRotation();
-          break;
-      }
-    }
-  });
-
-  // Touch support for mobile
-  let initialDistance = 0;
-  let initialScale = 1;
-
-  lightboxImage?.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 2) {
-      initialDistance = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      initialScale = currentScale;
-    }
-  });
-
-  lightboxImage?.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-    if (e.touches.length === 2) {
-      const distance = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      const scale = (distance / initialDistance) * initialScale;
-      currentScale = Math.min(Math.max(scale, 0.5), 5);
-      updateImageTransform();
-    }
-  });
-}
-
 // Initialize all animations
 function initAnimations() {
   // Initialize ScrollSmoother
@@ -278,11 +182,11 @@ function initAnimations() {
   gsap
     .timeline()
     .from(".hero__subtitle", { opacity: 0, y: 30, duration: 1 })
-    .from(
-      ".hero__name",
-      { opacity: 0, y: 50, duration: 1, stagger: 0.2 },
-      "-=0.5"
-    )
+    // .from(
+    //   ".hero__name",
+    //   { opacity: 0, y: 50, duration: 1, stagger: 0.2 },
+    //   "-=0.5"
+    // )
     .from(".hero__amp", { opacity: 0, scale: 0, duration: 0.5 }, "-=0.5")
     .from(".hero__date", { opacity: 0, y: 30, duration: 1 }, "-=0.5")
     .from(".hero__quote", { opacity: 0, duration: 1 }, "-=0.5")
@@ -300,21 +204,6 @@ function initAnimations() {
     },
   });
 
-  // Gallery items animation
-  const galleryItems = $$(".gallery__item");
-  galleryItems.forEach((item, index) => {
-    gsap.from(item, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      delay: index * 0.1,
-      scrollTrigger: {
-        trigger: item,
-        start: "top 80%",
-      },
-    });
-  });
-
   // Title animations
   const titles = $$(".hero__name");
   titles.forEach((title) => {
@@ -325,21 +214,16 @@ function initAnimations() {
       y: 50,
       rotateX: -90,
       stagger: 0.02,
-      duration: 1,
+      duration: 3,
       ease: "back.out(1.7)",
-      scrollTrigger: {
-        trigger: title,
-        start: "top 80%",
-      },
     });
   });
 }
 
 function loadIntroPanel() {
-  // Panel animation
   gsap.to(".panel", {
     scaleY: 0,
-    duration: 1.65,
+    duration: 2,
     ease: "power4.inOut",
   });
 }
@@ -356,7 +240,7 @@ function loadTitle() {
       yPercent: gsap.utils.wrap([200, -80]),
       opacity: 0,
       stagger: 0.018,
-      duration: 1.6,
+      duration: 2,
       ease: "power4.inOut",
     })
     .to(
@@ -367,14 +251,13 @@ function loadTitle() {
 }
 
 function loadSecImg() {
-  const splitJL = new SplitType(".JL", {
+  const splitHeading = new SplitType(".heading", {
     types: "chars",
   });
 
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: ".sec-img",
-      // markers: true,
       scrub: 0.4,
       scroller: "#smooth-wrapper",
       pin: true,
@@ -387,11 +270,19 @@ function loadSecImg() {
     scaleY: 0,
   })
     .from(
-      splitJL.chars,
+      splitHeading.chars,
       {
         opacity: 0,
         x: -100,
         stagger: 0.015,
+      },
+      0
+    )
+    .from(
+      ".text",
+      {
+        opacity: 0,
+        x: 1000,
       },
       0
     )
@@ -405,89 +296,387 @@ function loadSecImg() {
     );
 }
 
-function loadSpinImg() {
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: ".spin-img",
-        scrub: 1,
-        scroller: "#smooth-wrapper",
-      },
-    })
-    .from(".spin-img__list", {
-      scale: 0.8,
-    })
-    .to(".spin-img__list", {
-      scale: 1,
-      rotate: 270,
-      duration: 2,
-      ease: "power1.inOut",
-    })
-    .to(
-      ".spin-img__img",
-      {
-        rotate: -270,
-        duration: 2,
-        ease: "power1.inOut",
-      },
-      0
-    );
+function loadWeddingCeremony() {
+  const ceremonyTitle = new SplitType(".ceremony-title", {
+    types: "chars",
+  });
+
+  // Title animation
+  gsap.from(ceremonyTitle.chars, {
+    opacity: 0,
+    y: 100,
+    stagger: 0.05,
+    duration: 1.2,
+    ease: "back.out(1.7)",
+    scrollTrigger: {
+      trigger: ".wedding-ceremony",
+      start: "top 80%",
+    },
+  });
+
+  // Card entrance animation
+  gsap.from(".ceremony-card", {
+    opacity: 0,
+    scale: 0.8,
+    y: 50,
+    duration: 1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".ceremony-card",
+      start: "top 85%",
+    },
+  });
+
+  // Parents info animation
+  gsap.from(".parent-group", {
+    opacity: 0,
+    x: (index) => index % 2 === 0 ? -100 : 100,
+    duration: 0.8,
+    stagger: 0.2,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".parents-info",
+      start: "top 85%",
+    },
+  });
+
+  // Announcement text animation
+  gsap.from(".announcement-text", {
+    opacity: 0,
+    y: 30,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".ceremony-announcement",
+      start: "top 85%",
+    },
+  });
+
+  // Couple names animation
+  gsap.from(".name-script", {
+    opacity: 0,
+    scale: 0,
+    rotation: 10,
+    duration: 0.8,
+    stagger: 0.2,
+    ease: "back.out(1.7)",
+    scrollTrigger: {
+      trigger: ".couple-names",
+      start: "top 85%",
+    },
+  });
+
+  gsap.from(".couple-divider", {
+    opacity: 0,
+    scale: 0,
+    duration: 0.5,
+    ease: "back.out(1.7)",
+    scrollTrigger: {
+      trigger: ".couple-names",
+      start: "top 85%",
+    },
+  });
+
+  // Ceremony details animation
+  gsap.from(".ceremony-details p", {
+    opacity: 0,
+    y: 20,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".ceremony-details",
+      start: "top 85%",
+    },
+  });
+
 }
 
-function loadGallery() {
-  gsap.utils.toArray(".my-gallery").forEach((section: any, index) => {
-    const w = section.querySelector(".wrapper");
-    const [x, xEnd] =
-      index % 2
-        ? ["100%", (w.scrollWidth - section.offsetWidth) * -1]
-        : [w.scrollWidth * -0.5, 0];
-    gsap.fromTo(
-      w,
-      { x },
-      {
-        x: xEnd,
-        scrollTrigger: {
-          trigger: section,
-          scrub: 1,
-        },
+function loadEngagementCeremony() {
+  const engagementTitle = new SplitType(".engagement-title", {
+    types: "chars",
+  });
+
+  // Title animation
+  gsap.from(engagementTitle.chars, {
+    opacity: 0,
+    y: 80,
+    stagger: 0.04,
+    duration: 1,
+    ease: "back.out(1.5)",
+    scrollTrigger: {
+      trigger: ".engagement-ceremony",
+      start: "top 80%",
+    },
+  });
+
+  // Card entrance animation
+  gsap.from(".engagement-card", {
+    opacity: 0,
+    scale: 0.9,
+    y: 30,
+    duration: 0.8,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-card",
+      start: "top 85%",
+    },
+  });
+
+  // Header section animation
+  gsap.from(".invitation-text", {
+    opacity: 0,
+    y: 20,
+    duration: 0.6,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-header",
+      start: "top 85%",
+    },
+  });
+
+  gsap.from(".dotted-line", {
+    scaleX: 0,
+    duration: 0.8,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-header",
+      start: "top 85%",
+    },
+  });
+
+  gsap.from(".celebration-text", {
+    opacity: 0,
+    y: 15,
+    duration: 0.6,
+    delay: 0.3,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-header",
+      start: "top 85%",
+    },
+  });
+
+  // Couple names animation
+  gsap.from(".name-script-eng", {
+    opacity: 0,
+    scale: 0.5,
+    rotation: -5,
+    duration: 0.7,
+    stagger: 0.15,
+    ease: "back.out(1.5)",
+    scrollTrigger: {
+      trigger: ".engagement-couple",
+      start: "top 85%",
+    },
+  });
+
+  gsap.from(".couple-divider-eng", {
+    opacity: 0,
+    scale: 0,
+    duration: 0.4,
+    delay: 0.3,
+    ease: "back.out(1.5)",
+    scrollTrigger: {
+      trigger: ".engagement-couple",
+      start: "top 85%",
+    },
+  });
+
+  // Timing section animation
+  gsap.from(".engagement-timing p", {
+    opacity: 0,
+    y: 15,
+    duration: 0.5,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-timing",
+      start: "top 85%",
+    },
+  });
+
+  // Venue information animation
+  gsap.from(".engagement-venue p", {
+    opacity: 0,
+    x: (index) => index === 0 ? 0 : (index % 2 === 1 ? -30 : 30),
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".engagement-venue",
+      start: "top 85%",
+    },
+  });
+
+  // Family info animation
+  gsap.from(".family-group", {
+    opacity: 0,
+    y: 20,
+    x: (index) => index % 2 === 0 ? -50 : 50,
+    duration: 0.7,
+    stagger: 0.2,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".family-info-eng",
+      start: "top 85%",
+    },
+  });
+
+  // Subtle hover effect for the card
+  gsap.set(".engagement-card", {
+    transformOrigin: "center center"
+  });
+}
+
+// QR Download Functionality
+function initQRDownload() {
+  const downloadButtons = $$('.download-btn') as NodeListOf<HTMLButtonElement>;
+  
+  downloadButtons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const qrImagePath = button.getAttribute('data-qr');
+      const fileName = button.getAttribute('data-name') || 'QR_Code';
+      
+      if (!qrImagePath) {
+        console.error('QR image path not found');
+        return;
       }
-    );
+      
+      try {
+        // Show loading state
+        const originalContent = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Đang tải...</span>';
+        button.disabled = true;
+        
+        console.log(`Starting download for: ${fileName} from ${qrImagePath}`);
+        
+        // Fetch the image
+        const response = await fetch(qrImagePath);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const blob = await response.blob();
+        
+        // Enhanced download for better local support
+        try {
+          if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+            // For IE/Edge legacy support
+            (window.navigator as any).msSaveOrOpenBlob(blob, `${fileName}.jpg`);
+          } else {
+            // Modern browsers
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${fileName}.jpg`;
+            link.style.display = 'none';
+            
+            // Force download attributes for better compatibility
+            link.setAttribute('download', `${fileName}.jpg`);
+            link.setAttribute('target', '_blank');
+            
+            // Trigger download
+            document.body.appendChild(link);
+            
+            // Use both click and dispatchEvent for maximum compatibility
+            if (link.click) {
+              link.click();
+            } else {
+              // Fallback for older browsers
+              const event = new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+              });
+              link.dispatchEvent(event);
+            }
+            
+            // Cleanup with delay to ensure download starts
+            setTimeout(() => {
+              if (document.body.contains(link)) {
+                document.body.removeChild(link);
+              }
+              window.URL.revokeObjectURL(url);
+            }, 100);
+          }
+        } catch (downloadError) {
+          // Ultimate fallback: open in new tab for manual save
+          console.warn('Direct download failed, opening in new tab:', downloadError);
+          const url = window.URL.createObjectURL(blob);
+          const newTab = window.open(url, '_blank');
+          if (newTab) {
+            setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+          } else {
+            throw new Error('Unable to download or open image');
+          }
+        }
+        
+        // Show success state briefly
+        button.innerHTML = '<i class="fas fa-check"></i><span>Đã tải!</span>';
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalContent;
+          button.disabled = false;
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Download failed:', error);
+        
+        // Show error state
+        button.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Lỗi!</span>';
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-download"></i><span>Tải QR</span>';
+          button.disabled = false;
+        }, 2000);
+      }
+    });
   });
 }
 
-function smoothTitle() {
-  // let headings = gsap.utils.toArray(".JL").reverse();
-  // headings.forEach((heading: any, i) => {
-  //   let headingIndex = i + 1;
-  //   let mySplitText = new SplitType(heading, { types: "chars" });
-  //   let chars = mySplitText.chars ?? [];
-  //   chars.forEach((char, i) => {
-  //     smoother?.effects(char, { lag: (i + headingIndex) * 0.1, speed: 1 });
-  //   });
-  // });
-}
-
-function initBackgroundImagesInvitation() {
-  const bgElements = $$('[data-bg]') as NodeListOf<HTMLElement>;
-  bgElements.forEach((element) => {
-    const bgUrl = element.getAttribute('data-bg');
-    if (bgUrl) {
-      element.style.backgroundImage = `url(${bgUrl})`;
-    }
-  });
-}
 
 // Initialize everything when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  initAnimations();
-  loadIntroPanel();
-  loadTitle();
-  smoothTitle();
-  loadSecImg();
-  loadSpinImg();
-  loadGallery();
-  initBackgroundImagesInvitation();
-  initMusicPlayer();
-  initParticles();
-  initZoomableImages();
+document.addEventListener("DOMContentLoaded", async () => {
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  console.log('DOM loaded, starting image loading...');
+  
+  // Initialize image loading tracker first and wait for all images to load
+  const imageTracker = new ImageLoadingTracker();
+  
+  try {
+    await imageTracker.init();
+    console.log('All images loaded! Starting to initialize other components...');
+    
+    // Initialize all other components after images are loaded
+    initAnimations();
+    loadIntroPanel();
+    loadTitle();
+    loadSecImg();
+    loadWeddingCeremony();
+    loadEngagementCeremony();
+    initQRDownload();
+    initMusicPlayer();
+    initParticles();
+    
+    console.log('All components initialized successfully!');
+  } catch (error) {
+    console.error('Error during image loading:', error);
+    
+    // Fallback: initialize components anyway if there's an error
+    initAnimations();
+    loadIntroPanel();
+    loadTitle();
+    loadSecImg();
+    loadWeddingCeremony();
+    loadEngagementCeremony();
+    initQRDownload();
+    initMusicPlayer();
+    initParticles();
+  }
 });

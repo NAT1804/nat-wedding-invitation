@@ -6,7 +6,8 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Wedding Invitation - Join us for our special day" />
-  <title>Wedding Invitation</title>
+  <title>Anh Tuấn & Thu Uyên - Wedding Invitation</title>
+  <link rel="shortcut icon" href="/favicon/cloud-32.png" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -18,19 +19,19 @@
 
 <body>
   <!-- Loading Screen -->
-  <!-- <div class="loader" id="loader">
-      <div class="loader__heart">
-        <i class="fas fa-heart"></i>
-      </div>
-      <p class="loader__text">Preparing your invitation...</p>
-    </div> -->
+  <div class="loader" id="loader">
+    <div class="loader__heart">
+      <i class="fas fa-heart"></i>
+    </div>
+    <p class="loader__text">Đang chuẩn bị...</p>
+  </div>
 
   <div class="intro">
     <div class="panel"></div>
   </div>
 
   <!-- Music Toggle -->
-  <button class="music-toggle" id="musicToggle" aria-label="Toggle music">
+  <button class="music-toggle playing" id="musicToggle" aria-label="Toggle music">
     <i class="fas fa-music"></i>
   </button>
 
@@ -40,208 +41,201 @@
       <section class="hero" id="hero">
 
         <div class="hero__content">
-          <div class="hero__title-container">
-            <h1 class="hero__title">WELCOME</h1>
-          </div>
           <h2 class="hero__name">
-            <span class="hero__name">Thu Uyen</span>
-            <span class="hero__amp">&</span>
-            <span class="hero__name">Anh Tuan</span>
+            <span class="hero__name">Anh Tuấn & Thu Uyên</span>
+            <!-- <span class="hero__amp">&</span>
+            <span class="hero__name">Anh Tuấn</span> -->
           </h2>
+          <div class="hero__title-container">
+            <h1 class="hero__title"><span>Forever</span> <span>in</span> <span>Love</span></h1>
+          </div>
         </div>
-        <div class="hero__bg">
+        <div class="hero__bg" data-bg="/images/IMG_2828.jpg">
           <div class="hero__overlay"></div>
         </div>
         <div class="hero__particles" id="particles"></div>
       </section>
 
       <section class="sec-img">
-        <div class="JL">Save the date</div>
-        <div class="JL">Save the date</div>
-        <div class="JL">Save the date</div>
+        <!-- <div class="heading">Save the date</div> -->
+        <div class="heading">Ngày chung đôi</div>
+        <div class="text">
+          Tiếng trái tim đôi ta đập thật nhanh. Thì thầm lời yêu thương. Ngày tình về chung đôi... Sau bao nhiêu chờ
+          đợi, cuối cùng ngày vui của chúng ta cũng tới rồi. Cảm ơn vì mình đã luôn là một phần trong cuộc sống của
+          nhau. Em và anh không chỉ là người yêu mà chúng ta còn là tri kỷ. Ngày hôm nay, em sẽ là cô dâu của anh
+        </div>
         <div class="img-container">
           <div class="mask"></div>
-          <div class="img"></div>
+          <div class="img" data-bg="/images/IMG_2464.jpg"></div>
           </di>
       </section>
 
-      <!-- <section class="spin-img">
-          <ul class="spin-img__list">
-            <li class="spin-img__item" style="--x1: 2; --x2: 6; --y1: 1; --y2: 4;">
-              <img class="spin-img__img" src="/images/IMG_1246.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 6; --x2: 8; --y1: 2; --y2: 4;">
-              <img class="spin-img__img" src="/images/IMG_1805.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 1; --x2: 4; --y1: 4; --y2: 7;">
-              <img class="spin-img__img" src="/images/IMG_2519.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 4; --x2: 7; --y1: 4; --y2: 7;">
-              <img class="spin-img__img" src="/images/IMG_1681.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 7; --x2: 9; --y1: 4; --y2: 6;">
-              <img class="spin-img__img" src="/images/IMG_2792.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 2; --x2: 4; --y1: 7; --y2: 9;">
-              <img class="spin-img__img" src="/images/IMG_2256.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 4; --x2: 7; --y1: 7; --y2: 10;">
-              <img class="spin-img__img" src="/images/IMG_2464.jpg" alt="">
-            </li>
-            <li class="spin-img__item" style="--x1: 7; --x2: 10; --y1: 6; --y2: 9;">
-              <img class="spin-img__img" src="/images/IMG_2885.jpg" alt="">
-            </li>
-          </ul>
+      <!-- Engagement Ceremony Section -->
+      <section class="engagement-ceremony" id="engagement-ceremony">
+        <div class="engagement-container">
+          <div class="engagement-content">
+            <h2 class="engagement-title">Lễ Ăn Hỏi</h2>
+            <div class="engagement-card">
+              <div class="engagement-header">
+                <p class="invitation-text">TRÂN TRỌNG KÍNH MỜI</p>
+                <!-- <div class="dotted-line"></div> -->
+                <p class="celebration-text">TỚI DỰ TIỆC CHUNG VUI CÙNG GIA ĐÌNH CHÚNG TÔI</p>
+              </div>
 
-        </section> -->
+              <div class="engagement-couple">
+                <div class="bride-name-eng">
+                  <span class="name-script-eng">Thu Uyên</span>
+                </div>
+                <div class="couple-divider-eng">&</div>
+                <div class="groom-name-eng">
+                  <span class="name-script-eng">Anh Tuấn</span>
+                </div>
+              </div>
 
-      <!-- Gallery Section -->
-      <!-- <section class="gallery" id="gallery">
-          <h2 class="gallery__title">Our Memories</h2>
-          <div class="gallery__grid">
-            <div class="gallery__item">
-              <img src="/images/IMG_1246.jpg" alt="Memory 1" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
+              <div class="engagement-timing">
+                <p class="timing-text">VÀO LÚC 11 GIỜ 00 - THỨ SÁU</p>
+                <p class="engagement-date">10.10.2025</p>
+                <p class="lunar-date">Tức ngày 19 tháng 08 năm Ất Tỵ</p>
               </div>
-            </div>
-            <div class="gallery__item">
-              <img src="/images/IMG_1321.jpg" alt="Memory 2" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
+
+              <div class="engagement-venue">
+                <p class="venue-title">TẠI NHÀ HÀNG TIỆC CƯỚI NHẬT HÀ</p>
+                <p class="venue-address">Số 20 Đường Võ Nguyên Giáp, Phường Hồng Hải,</p>
+                <p class="venue-address">Thành phố Hạ Long, Tỉnh Quảng Ninh</p>
               </div>
-            </div>
-            <div class="gallery__item">
-              <img src="/images/IMG_1411.jpg" alt="Memory 3" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
-              </div>
-            </div>
-            <div class="gallery__item">
-              <img src="/images/IMG_1618.jpg" alt="Memory 4" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
-              </div>
-            </div>
-            <div class="gallery__item">
-              <img src="/images/IMG_1700.jpg" alt="Memory 5" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
-              </div>
-            </div>
-            <div class="gallery__item">
-              <img src="/images/IMG_1805.jpg" alt="Memory 6" />
-              <div class="gallery__overlay">
-                <i class="fas fa-search-plus"></i>
+
+              <div class="family-info-eng">
+                <div class="family-group">
+                  <p class="family-title">Nhà gái</p>
+                  <p class="family-name">BỐ: TRỊNH HỒNG TIẾN</p>
+                  <p class="family-name">MẸ: TRỊNH THỊ THOA</p>
+                  <p class="family-child">Cô dâu: Trịnh Thị Thu Uyên</p>
+                </div>
+                <div class="family-group">
+                  <p class="family-title">Nhà trai</p>
+                  <p class="family-name">BỐ: NGUYỄN VĂN TIỆM</p>
+                  <p class="family-name">MẸ: LÊ THỊ HUỆ</p>
+                  <p class="family-child">Chú rể: Nguyễn Anh Tuấn</p>
+                </div>
               </div>
             </div>
           </div>
-        </section> -->
+        </div>
+      </section>
 
-      <div class='my-gallery'>
-        <div class='wrapper text'>
-          Album Hình Cưới
+      
+
+      <!-- Wedding Ceremony Section -->
+      <section class="wedding-ceremony" id="wedding-ceremony">
+        <div class="ceremony-container">
+          <div class="ceremony-content">
+            <h2 class="ceremony-title">Lễ Thành Hôn</h2>
+            <div class="ceremony-card">
+              <div class="card-header">
+                <div class="parents-info">
+                  <div class="parent-group">
+                    <p class="parent-title">Ông, Bà</p>
+                    <p class="parent-name">NGUYỄN VĂN TIỆM</p>
+                    <p class="parent-name">LÊ THỊ HUỆ</p>
+                    <p class="parent-address">Thôn Nhân Phú, Xã Diên Hà,<br>Tỉnh Hưng Yên</p>
+                  </div>
+                  <div class="parent-group">
+                    <p class="parent-title">Ông, Bà</p>
+                    <p class="parent-name">TRỊNH HỒNG TIẾN</p>
+                    <p class="parent-name">TRỊNH THỊ THOA</p>
+                    <p class="parent-address">Phường Hồng Gai,<br>Tỉnh Quảng Ninh</p>
+                  </div>
+                </div>
+                
+                <div class="ceremony-announcement">
+                  <p class="announcement-text">TRÂN TRỌNG BÁO TIN</p>
+                  <p class="announcement-text">LỄ THÀNH HÔN CỦA CON CHÚNG TÔI</p>
+                </div>
+              </div>
+
+              <div class="couple-names">
+                <div class="groom-name">
+                  <span class="name-script">Nguyễn Anh Tuấn</span>
+                  <span class="name-label">Trưởng nam</span>
+                </div>
+                <div class="couple-divider">&</div>
+                <div class="bride-name">
+                  <span class="name-script">Trịnh Thị Thu Uyên</span>
+                  <span class="name-label">Út nữ</span>
+                </div>
+              </div>
+
+              <div class="ceremony-details">
+                <p class="ceremony-venue">HÔN LỄ ĐƯỢC CỬ HÀNH TẠI NHÀ HÀNG TIỆC CƯỚI ÁNH DƯƠNG</p>
+                <p class="ceremony-address">Thôn Nhân Phú, Xã Diên Hà, Tỉnh Hưng Yên</p>
+                <p class="ceremony-time">10 GIỜ 30 | 12.10.2025 | CHỦ NHẬT</p>
+                <p class="ceremony-date">Tức ngày 21 tháng 08 năm Ất Tỵ</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <section class='my-gallery'>
-        <ul class='wrapper'>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2681.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2792.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2910.jpg'></div>
-          </li>
-        </ul>
       </section>
-      <section class='my-gallery'>
-        <ul class='wrapper'>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2123.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_1899.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2096.jpg'></div>
-          </li>
-        </ul>
-      </section>
-      <section class='my-gallery'>
-        <ul class='wrapper'>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2036.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_1805.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2444.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_2828.jpg'></div>
-          </li>
-        </ul>
-      </section>
-      <section class='my-gallery'>
-        <ul class='wrapper'>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_1700.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_1618.jpg'></div>
-          </li>
-          <li>
-            <div class='gallery-img zoomable' data-bg='/images/IMG_1321.jpg'></div>
-          </li>
-        </ul>
-      </section>
-      <div class='my-gallery'>
-        <div class='wrapper text'>
-          Thiệp mời của nhà trai
+
+
+      <!-- Gallery Section -->
+      <section class="gallery" id="gallery">
+        <h2 class="gallery__title">Album ảnh</h2>
+        <div class="gallery__grid">
+          <div class="gallery__item">
+            <img src="/images/IMG_1321.jpg" alt="Memory 3" />
+          </div>
+          <div class="gallery__item">
+            <img src="/images/IMG_2123.jpg" alt="Memory 2" />
+          </div>
+          <div class="gallery__item">
+            <img src="/images/IMG_2681.jpg" alt="Memory 1" />
+          </div>
         </div>
-      </div>
-      <div class='groom-invitation'>
-        <div class='invitation-img zoomable' data-bg='/images/thiepmoinhatrai.jpg'></div>
-      </div>
-      <div class='my-gallery'>
-        <div class='wrapper text'>
-          Thiệp mời của nhà gái
+      </section>
+      
+
+      <section class="greeting">
+        <h2 class="greeting__title">Gửi lời chúc</h2>
+        <div class="greeting__content">
+          <div class="greeting__item">
+            <div class="qr-container">
+              <img src="/images/qr2.jpg" alt="QR Nguyễn Anh Tuấn" class="qr-image">
+              <button class="download-btn" data-qr="/images/qr2.jpg" data-name="Nguyen_Anh_Tuan_QR">
+                <i class="fas fa-download"></i>
+                <span>Tải QR</span>
+              </button>
+            </div>
+            <div class="greeting__name">Nguyễn Anh Tuấn</div>
+            <div class="greeting__number">19039125952016</div>
+          </div>
+          <div class="greeting__item">
+            <div class="qr-container">
+              <img src="/images/qr2.jpg" alt="QR Trịnh Thị Thu Uyên" class="qr-image">
+              <button class="download-btn" data-qr="/images/qr2.jpg" data-name="Trinh_Thi_Thu_Uyen_QR">
+                <i class="fas fa-download"></i>
+                <span>Tải QR</span>
+              </button>
+            </div>
+            <div class="greeting__name">Trịnh Thị Thu Uyên</div>
+            <div class="greeting__number">03329921999</div>
+          </div>
         </div>
-      </div>
-      <div class='bride-invitation'>
-        <div class='invitation-img zoomable' data-bg='/images/thiepmoinhagai.jpg'></div>
-      </div>
+      </section>
 
       <!-- Footer -->
       <footer class="footer">
         <div class="footer__container">
           <p>
-            &copy; 2025 Anh Tuan & Thu Uyen with
+            Đám cưới của chúng tôi chắc chắn sẽ kém vui đi rất nhiều nếu thiếu đi sự hiện diện của bạn. Cảm ơn bạn vì đã
+            trở thành một phần quan trọng trong ngày đặc biệt của chúng tôi!
+            <br>
+            Anh Tuấn & Thu Uyên with
             <i class="fas fa-heart"></i>
           </p>
         </div>
       </footer>
     </div>
   </main>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox__close" id="lightboxClose">&times;</button>
-    <img class="lightbox__image" id="lightboxImage" src="" alt="" />
-    <div class="lightbox__zoom-controls">
-      <button id="zoomOut"><i class="fas fa-minus"></i></button>
-      <button id="zoomReset"><i class="fas fa-expand-arrows-alt"></i></button>
-      <button id="zoomIn"><i class="fas fa-plus"></i></button>
-    </div>
-    <div class="lightbox__rotate-controls">
-      <button id="rotateLeft"><i class="fas fa-undo"></i></button>
-      <button id="rotateReset"><i class="fas fa-compass"></i></button>
-      <button id="rotateRight"><i class="fas fa-redo"></i></button>
-    </div>
-  </div>
 
   <!-- Audio Element -->
   <audio id="bgMusic" loop>

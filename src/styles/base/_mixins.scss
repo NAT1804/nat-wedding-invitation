@@ -104,6 +104,10 @@
   font-family: $font-inter;
 }
 
+@mixin font-bodega {
+  font-family: $font-bodega;
+}
+
 // Form Mixins
 @mixin form-input {
   transition: all 0.3s ease;
