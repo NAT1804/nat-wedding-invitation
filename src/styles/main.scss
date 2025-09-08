@@ -4,8 +4,8 @@
 @use "utils/animations" as *;
 
 @font-face {
-  font-family: 'Bodega';
-  src: url('fonts/VL_BODEGA_SCRIPT.OTF') format('opentype');
+  font-family: "Bodega";
+  src: url("fonts/VL_BODEGA_SCRIPT.OTF") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -203,6 +203,8 @@ section {
 
 // Gallery Section
 .gallery {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
   height: auto;
   min-height: 100vh;
   padding: 20px;
@@ -244,21 +246,20 @@ section {
         opacity: 1;
       }
 
-      img {
+      .gallery__bg {
         transform: scale(1.1);
       }
     }
+  }
 
-    img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-      
-      &.zoomable {
-        cursor: zoom-in;
-      }
-    }
+  &__bg {
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
   }
 
   &__overlay {
@@ -350,7 +351,7 @@ section {
     box-shadow: 0 20px 60px rgba($black, 0.5);
     transition: transform 0.3s ease;
   }
-  
+
   &__zoom-controls {
     position: absolute;
     bottom: 30px;
@@ -358,7 +359,7 @@ section {
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
-    
+
     button {
       background: rgba($white, 0.1);
       border: 2px solid rgba($white, 0.3);
@@ -370,7 +371,7 @@ section {
       transition: all 0.3s ease;
       @include flex-center;
       font-size: 20px;
-      
+
       &:hover {
         background: rgba($white, 0.2);
         border-color: rgba($white, 0.5);
@@ -378,14 +379,14 @@ section {
       }
     }
   }
-  
+
   &__rotate-controls {
     position: absolute;
     bottom: 30px;
     right: 30px;
     display: flex;
     gap: 10px;
-    
+
     button {
       background: rgba($white, 0.1);
       border: 2px solid rgba($white, 0.3);
@@ -397,21 +398,21 @@ section {
       transition: all 0.3s ease;
       @include flex-center;
       font-size: 18px;
-      
+
       &:hover {
         background: rgba($white, 0.2);
         border-color: rgba($white, 0.5);
         transform: scale(1.1);
       }
-      
+
       &#rotateLeft:hover {
         transform: scale(1.1) rotate(-15deg);
       }
-      
+
       &#rotateRight:hover {
         transform: scale(1.1) rotate(15deg);
       }
-      
+
       &#rotateReset:hover {
         transform: scale(1.1) rotate(360deg);
       }
@@ -468,37 +469,37 @@ section {
   }
 
   .gallery__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
 
-  .gallery__item img {
-    height: 400px;
+  .gallery__item .gallery__bg {
+    height: 200px;
   }
-  
+
   .lightbox {
     &__zoom-controls {
       bottom: 20px;
-      
+
       button {
         width: 45px;
         height: 45px;
         font-size: 16px;
       }
     }
-    
+
     &__rotate-controls {
       bottom: 80px;
       right: 50%;
       transform: translateX(50%);
-      
+
       button {
         width: 45px;
         height: 45px;
         font-size: 16px;
       }
     }
-    
+
     &__close {
       top: 20px;
       right: 20px;
@@ -529,7 +530,7 @@ section {
 
   &__heart {
     margin-bottom: 20px;
-    
+
     i {
       font-size: 60px;
       color: $primary-color;
@@ -547,7 +548,8 @@ section {
 }
 
 @keyframes heartbeat {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -556,7 +558,8 @@ section {
 }
 
 @keyframes fadeInOut {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
   }
   50% {
@@ -692,12 +695,12 @@ section {
   list-style-type: none;
   gap: 1rem;
   overflow: hidden;
-  
+
   li {
     flex: 1;
     min-height: 800px;
   }
-  
+
   &.text {
     font-size: clamp(4rem, 8vw, 16rem);
     line-height: 1;
@@ -717,7 +720,7 @@ section {
   background-position: center;
   background-repeat: no-repeat;
   transition: transform 0.3s ease;
-  
+
   &:hover {
     transform: scale(1.05);
   }
@@ -731,30 +734,30 @@ section {
   background: linear-gradient(135deg, #fef7f0 0%, #fef3ec 100%);
   min-height: 100vh;
   @include flex-center;
-  
+
   .ceremony-container {
     max-width: 900px;
     width: 100%;
     margin: 0 auto;
   }
-  
+
   .ceremony-content {
     text-align: center;
   }
-  
+
   .ceremony-title {
     @include font-dancing;
     font-size: 72px;
     color: $primary-color;
     // margin-bottom: 60px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    
+
     @include mobile-only {
       font-size: 48px;
       // margin-bottom: 40px;
     }
   }
-  
+
   .ceremony-card {
     background: white;
     border-radius: 20px;
@@ -762,9 +765,9 @@ section {
     @include shadow-xl;
     border: 3px solid $primary-color;
     position: relative;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: -10px;
       left: -10px;
@@ -775,32 +778,32 @@ section {
       z-index: -1;
       opacity: 0.1;
     }
-    
+
     @include mobile-only {
       padding: 20px 5px;
       margin: 0 10px;
     }
   }
-  
+
   // .card-header {
   //   margin-bottom: 40px;
   // }
-  
+
   .parents-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    
+
     @include mobile-only {
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
   }
-  
+
   .parent-group {
     text-align: center;
   }
-  
+
   .parent-title {
     @include font-playfair;
     font-size: 18px;
@@ -808,7 +811,7 @@ section {
     // color: darken($primary-color, 20%);
     margin-bottom: 8px;
   }
-  
+
   .parent-name {
     @include font-playfair;
     font-size: 13px;
@@ -817,7 +820,7 @@ section {
     margin-bottom: 4px;
     letter-spacing: 1px;
   }
-  
+
   .parent-address {
     @include font-inter;
     font-size: 12px;
@@ -825,12 +828,12 @@ section {
     line-height: 1.4;
     font-style: italic;
   }
-  
+
   .ceremony-announcement {
     text-align: center;
     padding: 20px 0;
   }
-  
+
   .announcement-text {
     @include font-playfair;
     font-size: 18px;
@@ -838,29 +841,29 @@ section {
     // color: darken($primary-color, 20%);
     margin-bottom: 8px;
     letter-spacing: 2px;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
-    
+
     @include mobile-only {
       font-size: 16px;
       letter-spacing: 1px;
     }
   }
-  
+
   .couple-names {
     display: flex;
     align-items: center;
     justify-content: center;
     // gap: 30px;
-    
+
     @include mobile-only {
       flex-direction: column;
       // gap: 10px;
     }
   }
-  
+
   .groom-name,
   .bride-name {
     text-align: center;
@@ -878,21 +881,21 @@ section {
     display: flex;
     flex-direction: column;
   }
-  
+
   .name-script {
     display: block;
-    font-family: 'Bodega', cursive;
+    font-family: "Bodega", cursive;
     font-size: 48px;
     color: $primary-color;
     margin-bottom: 8px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     font-weight: 800;
-    
+
     @include mobile-only {
-      font-size: 40px;
+      font-size: 38px;
     }
   }
-  
+
   .name-label {
     @include font-playfair;
     font-size: 12px;
@@ -906,24 +909,24 @@ section {
       align-self: flex-end;
     }
   }
-  
+
   .couple-divider {
     @include font-playfair;
     font-size: 36px;
     color: $primary-color;
     font-weight: 800;
     // height: 0px;
-    
+
     @include mobile-only {
       font-size: 24px;
     }
   }
-  
+
   .ceremony-details {
     text-align: center;
     padding-top: 16px;
   }
-  
+
   .ceremony-venue {
     @include font-playfair;
     font-size: 20px;
@@ -931,7 +934,7 @@ section {
     color: #1f2937;
     margin-bottom: 8px;
     letter-spacing: 1px;
-    
+
     @include mobile-only {
       font-size: 18px;
     }
@@ -943,7 +946,7 @@ section {
     color: #6b7280;
     font-style: italic;
   }
-  
+
   .ceremony-time {
     @include font-playfair;
     font-size: 28px;
@@ -951,13 +954,13 @@ section {
     color: $primary-color;
     margin-bottom: 10px;
     letter-spacing: 2px;
-    
+
     @include mobile-only {
       font-size: 18px;
       letter-spacing: 1px;
     }
   }
-  
+
   .ceremony-date {
     @include font-inter;
     font-size: 16px;
@@ -973,30 +976,30 @@ section {
   min-height: 100vh;
   height: auto;
   @include flex-center;
-  
+
   .engagement-container {
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
   }
-  
+
   .engagement-content {
     text-align: center;
   }
-  
+
   .engagement-title {
     @include font-dancing;
     font-size: 72px;
     color: $primary-color;
     // margin-bottom: 60px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    
+
     @include mobile-only {
       font-size: 48px;
       // margin-bottom: 40px;
     }
   }
-  
+
   .engagement-card {
     background: white;
     border-radius: 15px;
@@ -1004,9 +1007,9 @@ section {
     @include shadow-xl;
     border: 2px solid $primary-color;
     position: relative;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: -8px;
       left: -8px;
@@ -1017,16 +1020,16 @@ section {
       z-index: -1;
       opacity: 0.1;
     }
-    
+
     @include mobile-only {
       margin: 0 10px;
     }
   }
-  
+
   .engagement-header {
-    // margin-bottom: 40px;
+    margin-bottom: 0;
   }
-  
+
   .invitation-text {
     @include font-playfair;
     font-size: 18px;
@@ -1034,24 +1037,30 @@ section {
     color: #374151;
     margin-bottom: 20px;
     letter-spacing: 2px;
-    
+
     @include mobile-only {
       font-size: 16px;
       letter-spacing: 1px;
     }
   }
-  
+
   .dotted-line {
     width: 200px;
     height: 2px;
-    background: repeating-linear-gradient(to right, #9ca3af 0, #9ca3af 8px, transparent 8px, transparent 16px);
+    background: repeating-linear-gradient(
+      to right,
+      #9ca3af 0,
+      #9ca3af 8px,
+      transparent 8px,
+      transparent 16px
+    );
     margin: 20px auto;
-    
+
     @include mobile-only {
       width: 150px;
     }
   }
-  
+
   .celebration-text {
     @include font-playfair;
     font-size: 16px;
@@ -1059,19 +1068,19 @@ section {
     color: #6b7280;
     line-height: 1.5;
     margin-top: 20px;
-    
+
     @include mobile-only {
       font-size: 13px;
     }
   }
-  
+
   .engagement-couple {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 25px;
     // margin: 40px 0;
-    
+
     @include mobile-only {
       flex-direction: column;
       gap: 15px;
@@ -1093,37 +1102,37 @@ section {
     align-self: flex-end;
     margin-right: 2rem;
   }
-  
+
   .name-script-eng {
     display: block;
-    font-family: 'Bodega', cursive;
+    font-family: "Bodega", cursive;
     font-size: 42px;
     color: $primary-color;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     font-weight: 800;
-    
+
     @include mobile-only {
       font-size: 42px;
     }
   }
-  
+
   .couple-divider-eng {
     @include font-playfair;
     font-size: 28px;
     color: $primary-color;
     font-weight: 800;
-    
+
     @include mobile-only {
       font-size: 20px;
       height: 0px;
     }
   }
-  
+
   .engagement-timing {
     text-align: center;
     padding: 25px 0;
   }
-  
+
   .timing-text {
     @include font-playfair;
     font-size: 18px;
@@ -1131,12 +1140,12 @@ section {
     color: #374151;
     // margin-bottom: 10px;
     letter-spacing: 1px;
-    
+
     @include mobile-only {
       font-size: 16px;
     }
   }
-  
+
   .engagement-date {
     @include font-playfair;
     font-size: 36px;
@@ -1144,25 +1153,25 @@ section {
     color: $primary-color;
     // margin-bottom: 8px;
     letter-spacing: 3px;
-    
+
     @include mobile-only {
       font-size: 28px;
       letter-spacing: 2px;
     }
   }
-  
+
   .lunar-date {
     @include font-inter;
     font-size: 14px;
     color: #6b7280;
     font-style: italic;
   }
-  
+
   .engagement-venue {
     text-align: center;
     margin: 0 0 35px 0;
   }
-  
+
   .venue-title {
     @include font-playfair;
     font-size: 20px;
@@ -1170,41 +1179,41 @@ section {
     color: $primary-color;
     margin-bottom: 15px;
     letter-spacing: 1px;
-    
+
     @include mobile-only {
       font-size: 17px;
     }
   }
-  
+
   .venue-address {
     @include font-inter;
     font-size: 15px;
     color: #4b5563;
     line-height: 1.5;
     margin-bottom: 3px;
-    
+
     @include mobile-only {
       font-size: 14px;
     }
   }
-  
+
   .family-info-eng {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     // margin-top: 35px;
     // padding-top: 25px;
-    
+
     @include mobile-only {
       grid-template-columns: 1fr 1fr;
       // gap: 25px;
     }
   }
-  
+
   .family-group {
     text-align: center;
   }
-  
+
   .family-title {
     @include font-playfair;
     font-size: 16px;
@@ -1214,7 +1223,7 @@ section {
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  
+
   .family-name {
     @include font-playfair;
     font-size: 13px;
@@ -1223,7 +1232,7 @@ section {
     margin-bottom: 3px;
     letter-spacing: 0.5px;
   }
-  
+
   .family-child {
     @include font-inter;
     font-size: 12px;
@@ -1236,10 +1245,10 @@ section {
 .zoomable {
   cursor: zoom-in;
   position: relative;
-  
+
   &::after {
-    content: '\f065'; // Font Awesome zoom icon
-    font-family: 'Font Awesome 6 Free';
+    content: "\f065"; // Font Awesome zoom icon
+    font-family: "Font Awesome 6 Free";
     font-weight: 900;
     position: absolute;
     top: 50%;
@@ -1258,24 +1267,23 @@ section {
     align-items: center;
     justify-content: center;
   }
-  
+
   &:hover::after {
     opacity: 1;
   }
 }
 
-
 .groom-invitation,
 .bride-invitation {
   margin: 2rem auto;
-  
+
   .invitation-img {
     width: 100%;
     height: 50vh;
     background-size: contain;
     background-position: top;
     background-repeat: no-repeat;
-    
+
     &.zoomable:hover::after {
       top: 40%;
     }
@@ -1317,7 +1325,7 @@ section {
     margin-bottom: 10px;
     margin-top: 15px;
   }
-  
+
   &__number {
     @include font-dancing;
     font-size: 20px;
@@ -1335,17 +1343,17 @@ section {
   overflow: hidden;
   @include shadow-lg;
   transition: all 0.3s ease;
-  
+
   &:hover {
     @include shadow-xl;
     transform: translateY(-5px);
-    
+
     .download-btn {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
   }
-  
+
   .qr-image {
     width: 100%;
     height: auto;
@@ -1375,40 +1383,40 @@ section {
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 20px rgba($primary-color, 0.4);
-  
+
   &:hover {
     transform: translate(-50%, -50%) scale(1.05);
     box-shadow: 0 12px 30px rgba($primary-color, 0.6);
   }
-  
+
   &:active {
     transform: translate(-50%, -50%) scale(0.95);
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.8;
-    
+
     &:hover {
       background: rgba($primary-color, 0.95);
       transform: translate(-50%, -50%) scale(0.8);
       box-shadow: 0 8px 20px rgba($primary-color, 0.4);
     }
   }
-  
+
   i {
     font-size: 16px;
   }
-  
+
   span {
     font-weight: 500;
     letter-spacing: 0.5px;
   }
-  
+
   @include mobile-only {
     padding: 10px 16px;
     font-size: 13px;
-    
+
     i {
       font-size: 14px;
     }
@@ -1423,7 +1431,7 @@ section {
     color: $primary-color;
     margin-bottom: 40px;
   }
-  
+
   &__text {
     @include font-dancing;
     font-size: 24px;

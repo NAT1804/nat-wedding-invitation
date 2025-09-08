@@ -134,7 +134,7 @@ function initMusicPlayer() {
   const bgMusic = $("#bgMusic") as HTMLAudioElement;
   let isPlaying = musicToggle.classList.contains("playing");
   if (isPlaying) {
-    bgMusic?.play();
+    // bgMusic?.play();
   }
 
   musicToggle?.addEventListener("click", () => {
