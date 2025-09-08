@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: "Bodega";
-  src: url("fonts/VL_BODEGA_SCRIPT.OTF") format("opentype");
+  src: url("/fonts/vl_bodega_script.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -63,6 +63,7 @@ section {
   position: relative;
   width: 100%;
   height: 100vh;
+  min-height: 100vh;
 }
 
 // Hero Section
@@ -142,7 +143,7 @@ section {
     font-size: 40px;
     display: block;
     margin: 20px 0;
-    color: $rose-300;
+    color: $primary-color;
   }
 
   &__particles {
@@ -728,8 +729,6 @@ section {
 
 // Wedding Ceremony Section
 .wedding-ceremony {
-  min-height: 100vh;
-  height: auto;
   padding: 20px 5px;
   background: linear-gradient(135deg, #fef7f0 0%, #fef3ec 100%);
   min-height: 100vh;
@@ -973,8 +972,6 @@ section {
 .engagement-ceremony {
   padding: 20px 5px;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  min-height: 100vh;
-  height: auto;
   @include flex-center;
 
   .engagement-container {
@@ -1291,9 +1288,6 @@ section {
 }
 
 .greeting {
-  min-height: 100vh;
-  height: auto;
-
   &__title {
     @include font-dancing;
     font-size: 48px;
