@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-# Sitemap: https://nat-wedding-invitation.vercel.app/sitemap.xml
+# Sitemap: https://thiepcuoi.tuanuyen.online/sitemap.xml
 
 # Block unnecessary pages
 Disallow: /admin/
