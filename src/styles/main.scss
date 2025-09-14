@@ -124,7 +124,7 @@ section {
   }
 
   &__name {
-    @include font-dancing;
+    @include font-alex-brush;
     font-size: 60px;
     font-weight: 700;
     display: block;
@@ -455,7 +455,8 @@ section {
     top: 1rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 30px;
+    font-size: 40px;
+    font-weight: 200;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -745,7 +746,7 @@ section {
   }
 
   .ceremony-title {
-    @include font-dancing;
+    @include font-bodega;
     font-size: 72px;
     color: $primary-color;
     // margin-bottom: 60px;
@@ -808,22 +809,22 @@ section {
     font-size: 18px;
     font-weight: 600;
     // color: darken($primary-color, 20%);
-    margin-bottom: 8px;
+    // margin-bottom: 8px;
   }
 
   .parent-name {
     @include font-playfair;
     font-size: 13px;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 4px;
+    color: #000;
+    // margin-bottom: 4px;
     letter-spacing: 1px;
   }
 
   .parent-address {
     @include font-inter;
     font-size: 12px;
-    color: #6b7280;
+    color: #000;
     line-height: 1.4;
     font-style: italic;
   }
@@ -883,12 +884,12 @@ section {
 
   .name-script {
     display: block;
-    font-family: "Bodega", cursive;
+    @include font-alex-brush;
     font-size: 48px;
     color: $primary-color;
     margin-bottom: 8px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    font-weight: 800;
+    font-weight: 400;
 
     @include mobile-only {
       font-size: 34px;
@@ -910,7 +911,7 @@ section {
   }
 
   .couple-divider {
-    @include font-playfair;
+    @include font-alex-brush;
     font-size: 36px;
     color: $primary-color;
     font-weight: 800;
@@ -930,7 +931,7 @@ section {
     @include font-playfair;
     font-size: 20px;
     font-weight: 600;
-    color: #1f2937;
+    color: $primary-color;
     margin-bottom: 8px;
     letter-spacing: 1px;
 
@@ -940,14 +941,14 @@ section {
   }
 
   .ceremony-address {
-    @include font-inter;
+    @include font-lora;
     font-size: 16px;
-    color: #6b7280;
+    color: #000;
     font-style: italic;
   }
 
   .ceremony-time {
-    @include font-playfair;
+    @include font-lora;
     font-size: 28px;
     font-weight: 700;
     color: $primary-color;
@@ -961,9 +962,9 @@ section {
   }
 
   .ceremony-date {
-    @include font-inter;
+    @include font-lora;
     font-size: 16px;
-    color: #6b7280;
+    color: #000;
     font-style: italic;
   }
 }
@@ -985,11 +986,12 @@ section {
   }
 
   .engagement-title {
-    @include font-dancing;
+    @include font-bodega;
     font-size: 72px;
     color: $primary-color;
-    // margin-bottom: 60px;
+    margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
 
     @include mobile-only {
       font-size: 48px;
@@ -1024,15 +1026,15 @@ section {
   }
 
   .engagement-header {
-    margin-bottom: 0;
+    margin-bottom: 1rem;
   }
 
   .invitation-text {
     @include font-playfair;
     font-size: 18px;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 20px;
+    font-weight: 400;
+    color: black;
+    margin-bottom: .5rem;
     letter-spacing: 2px;
 
     @include mobile-only {
@@ -1060,11 +1062,11 @@ section {
 
   .celebration-text {
     @include font-playfair;
-    font-size: 16px;
-    font-weight: 500;
-    color: #6b7280;
+    font-size: 1rem;
+    font-weight: 400;
+    color: black;
     line-height: 1.5;
-    margin-top: 20px;
+    // margin-top: 20px;
 
     @include mobile-only {
       font-size: 13px;
@@ -1075,18 +1077,18 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 25px;
+    // gap: 25px;
     // margin: 40px 0;
 
     @include mobile-only {
       flex-direction: column;
-      gap: 15px;
+      // gap: 15px;
     }
   }
 
   .bride-name-eng,
   .groom-name-eng {
-    text-align: center;
+    text-align: start;
     flex: 1;
   }
 
@@ -1097,16 +1099,16 @@ section {
 
   .groom-name-eng {
     align-self: flex-end;
-    margin-right: 2rem;
+    margin-right: 1.5rem;
   }
 
   .name-script-eng {
     display: block;
-    font-family: "Bodega", cursive;
+    @include font-pinyon-script;
     font-size: 42px;
     color: $primary-color;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    font-weight: 800;
+    font-weight: 400;
 
     @include mobile-only {
       font-size: 42px;
@@ -1114,7 +1116,7 @@ section {
   }
 
   .couple-divider-eng {
-    @include font-playfair;
+    @include font-alex-brush;
     font-size: 28px;
     color: $primary-color;
     font-weight: 800;
@@ -1127,16 +1129,16 @@ section {
 
   .engagement-timing {
     text-align: center;
-    padding: 25px 0;
+    padding: 1rem 0 25px;
   }
 
   .timing-text {
-    @include font-playfair;
+    @include font-lora;
     font-size: 18px;
     font-weight: 600;
-    color: #374151;
+    color: #000;
     // margin-bottom: 10px;
-    letter-spacing: 1px;
+    // letter-spacing: 1px;
 
     @include mobile-only {
       font-size: 16px;
@@ -1144,23 +1146,23 @@ section {
   }
 
   .engagement-date {
-    @include font-playfair;
-    font-size: 36px;
+    @include font-montserrat;
+    font-size: 40px;
     font-weight: 700;
     color: $primary-color;
     // margin-bottom: 8px;
-    letter-spacing: 3px;
+    // letter-spacing: 3px;
 
     @include mobile-only {
-      font-size: 28px;
-      letter-spacing: 2px;
+      // font-size: 28px;
+      // letter-spacing: 2px;
     }
   }
 
   .lunar-date {
-    @include font-inter;
+    @include font-lora;
     font-size: 14px;
-    color: #6b7280;
+    color: #000;
     font-style: italic;
   }
 
@@ -1170,11 +1172,11 @@ section {
   }
 
   .venue-title {
-    @include font-playfair;
+    @include font-lora;
     font-size: 20px;
     font-weight: 700;
     color: $primary-color;
-    margin-bottom: 15px;
+    margin-bottom: 0.5rem;
     letter-spacing: 1px;
 
     @include mobile-only {
@@ -1183,9 +1185,10 @@ section {
   }
 
   .venue-address {
-    @include font-inter;
+    @include font-lora;
     font-size: 15px;
-    color: #4b5563;
+    color: #000;
+    font-style: italic;
     line-height: 1.5;
     margin-bottom: 3px;
 
@@ -1212,17 +1215,16 @@ section {
   }
 
   .family-title {
-    @include font-playfair;
+    @include font-lora;
     font-size: 16px;
     font-weight: 700;
-    color: $primary-color;
+    color: #000;
     margin-bottom: 12px;
-    text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   .family-name {
-    @include font-playfair;
+    @include font-lora;
     font-size: 13px;
     font-weight: 600;
     color: #374151;
@@ -1231,7 +1233,7 @@ section {
   }
 
   .family-child {
-    @include font-inter;
+    @include font-lora;
     font-size: 12px;
     color: #6b7280;
     font-style: italic;
@@ -1288,6 +1290,8 @@ section {
 }
 
 .greeting {
+  height: auto;
+  
   &__title {
     @include font-dancing;
     font-size: 48px;
@@ -1432,5 +1436,16 @@ section {
     text-align: center;
     color: $primary-color;
     margin-bottom: 40px;
+  }
+}
+
+.mapouter {
+  height: 100%;
+  .map-title {
+    @include font-dancing;
+    font-size: 24px;
+    text-align: center;
+    color: $primary-color;
+    margin: 1rem 0;
   }
 }

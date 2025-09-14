@@ -108,6 +108,26 @@
   font-family: $font-bodega;
 }
 
+@mixin font-alex-brush {
+  font-family: $font-alex-brush;
+}
+
+@mixin font-pinyon-script {
+  font-family: $font-pinyon-script;
+}
+
+@mixin font-cormorant-garamond {
+  font-family: $font-cormorant-garamond;
+}
+
+@mixin font-lora {
+  font-family: $font-lora;
+}
+
+@mixin font-montserrat {
+  font-family: $font-montserrat;
+}
+
 // Form Mixins
 @mixin form-input {
   transition: all 0.3s ease;

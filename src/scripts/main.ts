@@ -8,123 +8,30 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-// Image loading tracker
-class ImageLoadingTracker {
-  private totalImages = 0;
-  private loadedImages = 0;
-  private loader: HTMLElement | null = null;
-  private resolvePromise: (() => void) | null = null;
-  private isLoaderHidden = false;
-
-  constructor() {
-    this.loader = $("#loader");
-  }
-
-  init(): Promise<void> {
-    return new Promise((resolve) => {
-      this.resolvePromise = resolve;
-      
-      // Get all images that need to be tracked
-      const images = $$('img') as NodeListOf<HTMLImageElement>;
-      const bgImages = $$('[data-bg]') as NodeListOf<HTMLElement>;
-      
-      this.totalImages = images.length + bgImages.length;
-      
-      if (this.totalImages === 0) {
-        this.allImagesLoaded();
-        return;
-      }
-
-      console.log(`Starting to load ${this.totalImages} images...`);
-
-      // Track regular img elements
-      images.forEach(img => {
-        if (img.complete && img.naturalHeight !== 0) {
-          this.imageLoaded();
-        } else {
-          img.addEventListener('load', () => this.imageLoaded());
-          img.addEventListener('error', () => this.imageLoaded());
-        }
-      });
-
-      // Track background images
-      bgImages.forEach(element => {
-        const bgUrl = element.getAttribute('data-bg');
-        if (bgUrl) {
-          const img = new Image();
-          img.onload = () => {
-            element.style.backgroundImage = `url(${bgUrl})`;
-            this.imageLoaded();
-          };
-          img.onerror = () => this.imageLoaded();
-          img.src = bgUrl;
-        } else {
-          this.imageLoaded();
-        }
-      });
-    });
-  }
-
-  private imageLoaded() {
-    this.loadedImages++;
-    console.log(`Images loaded: ${this.loadedImages}/${this.totalImages}`);
-    
-    if (this.loadedImages >= this.totalImages) {
-      this.allImagesLoaded();
+// Background image loader
+function loadBackgroundImages() {
+  const bgImages = $$('[data-bg]') as NodeListOf<HTMLElement>;
+  
+  bgImages.forEach(element => {
+    const bgUrl = element.getAttribute('data-bg');
+    if (bgUrl) {
+      element.style.backgroundImage = `url(${bgUrl})`;
     }
-  }
+  });
+}
 
-  private allImagesLoaded() {
-    console.log('All images loaded! Hiding loader and resolving promise...');
+// Simple loader management
+function hideLoader() {
+  const loader = $("#loader");
+  if (loader) {
+    loader.classList.add('hidden');
     
-    // Add a small delay to ensure smooth transition
+    // Remove from DOM after transition
     setTimeout(() => {
-      this.hideLoader();
-      
-      setTimeout(() => {
-        if (this.resolvePromise) {
-          this.resolvePromise();
-        }
-      }, 600); 
+      if (loader && document.body.contains(loader)) {
+        loader.remove();
+      }
     }, 500);
-  }
-
-  private hideLoader() {
-    if (this.isLoaderHidden) {
-      console.log('Loader already hidden, skipping...');
-      return;
-    }
-    
-    this.isLoaderHidden = true;
-    
-    if (this.loader && this.loader.parentNode) {
-      this.loader.classList.add('hidden');
-      console.log('Loader hidden class added');
-      
-      // Remove from DOM after transition, but only if it's still in the DOM
-      setTimeout(() => {
-        if (this.loader && document.body.contains(this.loader)) {
-          try {
-            // Use remove() method which is safer than removeChild()
-            this.loader.remove();
-            console.log('Loader removed from DOM successfully');
-            this.loader = null; // Clear reference
-          } catch (error) {
-            console.warn('Error removing loader from DOM:', error);
-            // Fallback: try removeChild if remove() fails
-            try {
-              if (this.loader && this.loader.parentNode) {
-                this.loader.parentNode.removeChild(this.loader);
-                console.log('Loader removed using removeChild fallback');
-                this.loader = null;
-              }
-            } catch (fallbackError) {
-              console.error('Failed to remove loader with both methods:', fallbackError);
-            }
-          }
-        }
-      }, 500);
-    }
   }
 }
 
@@ -160,7 +67,7 @@ function initParticles() {
     const particle = document.createElement("div");
     particle.className = "particle";
     particle.style.left = Math.random() * 100 + "%";
-    particle.style.animationDelay = Math.random() * 20 + "s";
+    particle.style.animationDelay = Math.random() * 10 + "s";
     particle.style.animationDuration = 20 + Math.random() * 20 + "s";
     particlesContainer.appendChild(particle);
   }
@@ -642,41 +549,29 @@ function initQRDownload() {
 
 
 // Initialize everything when DOM is loaded
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-  console.log('DOM loaded, starting image loading...');
+  console.log('DOM loaded, initializing components...');
   
-  // Initialize image loading tracker first and wait for all images to load
-  const imageTracker = new ImageLoadingTracker();
+  // Load background images immediately
+  loadBackgroundImages();
   
-  try {
-    await imageTracker.init();
-    console.log('All images loaded! Starting to initialize other components...');
-    
-    // Initialize all other components after images are loaded
-    initAnimations();
+  // Hide loader after a short delay
+  const timeout = setTimeout(() => {
+    hideLoader();
     loadIntroPanel();
-    loadTitle();
-    loadSecImg();
-    loadWeddingCeremony();
-    loadEngagementCeremony();
-    initQRDownload();
-    initMusicPlayer();
-    initParticles();
-    
-    console.log('All components initialized successfully!');
-  } catch (error) {
-    console.error('Error during image loading:', error);
-    
-    // Fallback: initialize components anyway if there's an error
-    initAnimations();
-    loadIntroPanel();
-    loadTitle();
-    loadSecImg();
-    loadWeddingCeremony();
-    loadEngagementCeremony();
-    initQRDownload();
-    initMusicPlayer();
-    initParticles();
-  }
+    clearTimeout(timeout);
+  }, 1500);
+  
+  // Initialize all components immediately
+  initAnimations();
+  loadTitle();
+  loadSecImg();
+  loadWeddingCeremony();
+  loadEngagementCeremony();
+  initQRDownload();
+  initMusicPlayer();
+  initParticles();
+  
+  console.log('All components initialized successfully!');
 });
