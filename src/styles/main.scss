@@ -3,13 +3,6 @@
 @use "base/mixins" as *;
 @use "utils/animations" as *;
 
-@font-face {
-  font-family: "Bodega";
-  src: url("/fonts/vl_bodega_script.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 // Base styles
 * {
   margin: 0;
@@ -122,7 +115,8 @@ section {
     font-size: 14.5vw;
     text-align: center;
     user-select: none;
-    font-family: "Bodega", cursive;
+    @include font-alex-brush;
+    font-weight: 500;
   }
 
   &__name {
@@ -770,7 +764,7 @@ section {
   }
 
   .ceremony-title {
-    @include font-bodega;
+    @include font-alex-brush;
     font-size: 72px;
     color: $primary-color;
     // margin-bottom: 60px;
@@ -1013,7 +1007,7 @@ section {
   }
 
   .engagement-title {
-    @include font-bodega;
+    @include font-alex-brush;
     font-size: 72px;
     color: $primary-color;
     margin-bottom: 1rem;
