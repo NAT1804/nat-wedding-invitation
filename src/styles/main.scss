@@ -72,7 +72,9 @@ section {
   height: auto;
   position: relative;
   overflow: hidden;
-  @include flex-center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 
   &__bg {
     position: absolute;
@@ -158,6 +160,10 @@ section {
 }
 
 @media (max-width: 768px) {
+  .hero {
+    align-items: center;
+  }
+
   .hero__bg {
     background-position: 30% center;
   }
@@ -255,7 +261,7 @@ section {
 
   &__bg {
     width: 100%;
-    height: 300px;
+    height: 400px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -476,7 +482,7 @@ section {
   }
 
   .gallery__item .gallery__bg {
-    height: 200px;
+    height: 300px;
   }
 
   .lightbox {
@@ -594,28 +600,40 @@ section {
   .heading {
     z-index: 999;
     position: absolute;
-    top: 6%;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     @include font-alex-brush;
-    font-size: 50px;
+    font-size: 100px;
     color: white;
     text-align: center;
     user-select: none;
+
+    @include mobile-only {
+      top: 6%;
+      font-size: 50px;
+    }
   }
 
   .text {
     color: #fff;
     @include font-playfair;
     position: absolute;
-    top: 20%;
+    top: 25%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 999;
     text-align: center;
     width: 100%;
-    padding: 2rem;
+    padding: 2rem 8rem;
+    font-size: 30px;
+
+    @include mobile-only {
+      padding: 2rem;
+      top: 20%;
+      font-size: 18px;
+    }
   }
 
   .img-container {
@@ -645,6 +663,12 @@ section {
       background-repeat: no-repeat;
       background-position: center;
     }
+  }
+}
+
+@include mobile-only {
+  .heading {
+    font-size: 30px;
   }
 }
 
@@ -972,7 +996,7 @@ section {
 // Engagement Ceremony Section
 .engagement-ceremony {
   box-sizing: border-box;
-  height: 100vh;
+  height: auto;
   min-height: 100vh;
   padding: 20px 5px;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -1103,6 +1127,12 @@ section {
   .groom-name-eng {
     align-self: flex-end;
     margin-right: 1.5rem;
+    display: flex;
+    align-items: center;
+
+    @include mobile-only {
+      display: block;
+    }
   }
 
   .name-script-eng {
@@ -1112,9 +1142,13 @@ section {
     color: $primary-color;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     font-weight: 400;
+    text-align: right;
+    margin-right: 2rem;
+    margin-left: 2rem;
 
     @include mobile-only {
-      font-size: 42px;
+      text-align: left;
+      margin-right: 0rem;
     }
   }
 
@@ -1294,6 +1328,10 @@ section {
 
 .greeting {
   height: auto;
+  display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
   
   &__title {
     @include font-dancing;
@@ -1305,10 +1343,10 @@ section {
 
   &__content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
+    gap: 10rem;
   }
 
   &__item {
@@ -1333,6 +1371,17 @@ section {
     text-align: center;
     color: $primary-color;
     margin-bottom: 10px;
+  }
+}
+
+@include mobile-only {
+  .greeting {
+
+  }
+
+  .greeting__content {
+    flex-direction: column;
+    gap: 3rem;
   }
 }
 
